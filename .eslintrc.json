@@ -25,10 +25,11 @@
         "prettier"
     ],
     "rules": {
-        "prettier/prettier": "error",
+        "prettier/prettier": ["error", { "endOfLine": "auto" }],
         "react/jsx-one-expression-per-line": "off",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
+        "linebreak-style": "off",
         "react/jsx-filename-extension": [
             1,
             {
@@ -36,12 +37,6 @@
             }
         ],
         "import/prefer-default-export": "off",
-        "@typescript-eslint/explicit-function-return-type": [
-            "error",
-            {
-                "allowExpressions": true
-            }
-        ],
         "import/extensions": [
             "error",
             "ignorePackages",

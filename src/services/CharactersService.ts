@@ -25,8 +25,7 @@ export interface Result {
 }
 
 class CharactersService {
-  static async get(): Promise<ResponseData> {
-    //   static get<T, R = AxiosResponse<T>>(): Promise<R> {
+  static async get() {
     const apikey = '';
 
     const response = await api.get<ResponseData>(

@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-const StyledUl = styled.ul`
+const Ul = styled.ul`
   list-style: none;
   display: flex;
   justify-content: space-around;
@@ -10,20 +10,26 @@ const StyledUl = styled.ul`
   min-height: 10vh;
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 4px;
+`;
+
 function Nav(): ReactElement {
   return (
     <nav>
-      <StyledUl>
-        <Link to="/">
+      <Ul>
+        <StyledLink to="/">
           <li>Home Page</li>
-        </Link>
-        <Link to="/comics">
+        </StyledLink>
+        <StyledLink to="/comics">
           <li>Comics</li>
-        </Link>
-        <Link to="/characters">
+        </StyledLink>
+        <StyledLink to="/characters">
           <li>Characters</li>
-        </Link>
-      </StyledUl>
+        </StyledLink>
+      </Ul>
     </nav>
   );
 }

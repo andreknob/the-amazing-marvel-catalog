@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../../components/modal/Modal';
 // import usePagination from '../../hooks/usePagination';
-import CharactersService, {
-  Pagination,
-  Result,
-} from '../../services/CharactersService';
+import CharactersService from '../../services/CharactersService';
+import { Pagination, Character } from '../../types/CharacterTypes';
+import CharacterItem from './CharacterItem';
+import CharacterModalContent from './CharacterModalContent';
 
 const Container = styled.div`
   width: 70%;
@@ -16,45 +16,62 @@ const Container = styled.div`
   flex-wrap: wrap;
 `;
 
-const Item = styled.div`
-  border: 1px solid black;
-  margin: 0 8px 16px 8px;
-  flex: 0 1 250px;
-`;
-
 interface Props {
   name: number;
 }
 
 const CharactersList: React.FC<Props> = () => {
   const [pagination, setPagination] = useState<Pagination>();
-  const [characters, setCharacters] = useState<Result[]>();
+  const [dataProvider, setDataProvider] = useState<string>();
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedIndex, setSelectedIndex] = useState<number>();
 
   // usePagination(pagination);
 
   const fetchData = useCallback(async () => {
-    const { data } = await CharactersService.get();
+    const { data, attributionText } = await CharactersService.get();
     const { results, ...paginationData } = data;
 
     setCharacters(results);
+    setDataProvider(attributionText);
     setPagination(paginationData);
-  }, [setCharacters, setPagination]);
+  }, [setCharacters, setDataProvider, setPagination]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  const handleItemClick = useCallback(() => {
-    setIsModalOpen(true);
-  }, [setIsModalOpen]);
+  const handleItemClick = useCallback(
+    (index) => {
+      setIsModalOpen(true);
+      setSelectedIndex(index);
+    },
+    [setIsModalOpen, setSelectedIndex],
+  );
+
+  const selectedCharacter = useMemo(
+    () => (selectedIndex != null ? characters[selectedIndex] : null),
+    [characters, selectedIndex],
+  );
 
   return (
     <Container>
-      {characters?.map((character) => (
-        <Item onClick={handleItemClick}>{character.name}</Item>
+      {characters?.map((character, index) => (
+        <CharacterItem
+          key={character.id}
+          onClick={() => handleItemClick(index)}
+          character={character}
+        />
       ))}
-      <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
+        {selectedCharacter != null ? (
+          <CharacterModalContent
+            dataProvider={dataProvider}
+            character={selectedCharacter}
+          />
+        ) : null}
+      </Modal>
     </Container>
   );
 };

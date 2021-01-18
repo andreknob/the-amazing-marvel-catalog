@@ -1,28 +1,5 @@
+import { ResponseData } from '../types/CharacterTypes';
 import api from './api';
-
-interface ResponseData {
-  attributionText: string;
-  code: number;
-  data: PageResults;
-}
-
-export interface Pagination {
-  count: number;
-  limit: number;
-  offset: number;
-  total: number;
-}
-
-interface PageResults extends Pagination {
-  results: Result[];
-}
-
-export interface Result {
-  id: number;
-  name: string;
-  description: string;
-  resourceURI: string;
-}
 
 class CharactersService {
   static async get() {

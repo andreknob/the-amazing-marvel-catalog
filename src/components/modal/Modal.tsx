@@ -35,9 +35,6 @@ function Modal({ isOpen, setIsModalOpen, children }: ModalProps) {
           <>
             {children}
             <CloseButton onClick={handleClickOut}>x</CloseButton>
-            {
-              // esse botão poderia ser um pseudo element do body
-            }
           </>
         </Body>
       </Background>

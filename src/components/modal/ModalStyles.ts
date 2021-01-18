@@ -164,8 +164,9 @@ const Body = styled.div<BodyProps>`
 const CloseButton = styled.div`
   position: absolute;
   top: 2px;
-  right: 6px;
-  color: #b6c0c7;
+  right: 8px;
+  color: white;
+  font-size: 24px;
   cursor: pointer;
 `;
 

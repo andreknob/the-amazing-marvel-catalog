@@ -6,7 +6,8 @@ class CharactersService {
     const apikey = '';
 
     const response = await api.get<ResponseData>(
-      `/characters?nameStartsWith=iron&orderBy=name&apikey=${apikey}`,
+      // `/characters?nameStartsWith=iron&orderBy=name&apikey=${apikey}`,
+      `/characters?orderBy=name&apikey=${apikey}`,
     );
     return response.data;
   }

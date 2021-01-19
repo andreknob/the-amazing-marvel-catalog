@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../../components/modal/Modal';
+import PaginationBar from '../../components/pagination-bar/PaginationBar';
 // import usePagination from '../../hooks/usePagination';
 import CharactersService from '../../services/CharactersService';
 import { Pagination, Character } from '../../types/CharacterTypes';
@@ -10,7 +11,9 @@ import CharacterModalContent from './CharacterModalContent';
 const Container = styled.div`
   width: 70%;
   margin: 0 auto;
+`;
 
+const Characters = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -57,13 +60,18 @@ const CharactersList: React.FC<Props> = () => {
 
   return (
     <Container>
-      {characters?.map((character, index) => (
-        <CharacterItem
-          key={character.id}
-          onClick={() => handleItemClick(index)}
-          character={character}
-        />
-      ))}
+      <Characters>
+        {characters?.map((character, index) => (
+          <CharacterItem
+            key={character.id}
+            onClick={() => handleItemClick(index)}
+            character={character}
+          />
+        ))}
+      </Characters>
+
+      {pagination != null && <PaginationBar pagination={pagination} />}
+
       <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
         {selectedCharacter != null ? (
           <CharacterModalContent

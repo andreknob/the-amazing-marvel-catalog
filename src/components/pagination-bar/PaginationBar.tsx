@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Pagination } from '../../types/CharacterTypes';
 
@@ -7,14 +7,42 @@ const Container = styled.div`
   margin: 48px auto;
 `;
 
-const Button = styled.button``;
-type Props = {
-  pagination: Pagination;
+type ButtonProps = {
+  isActive?: boolean;
 };
 
-const PaginationBar = ({ pagination }: Props) => {
+const Button = styled.button<ButtonProps>`
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  padding: 8px;
+  font-size: 18px;
+  transition: background-color 0.2s;
+  margin: 0 2px;
+
+  ${(props) => props.isActive && 'color: #00bcd4;'}
+
+  &:hover {
+    background-color: #ddd;
+  }
+`;
+
+type Props = {
+  pagination: Pagination;
+  onPageChange: Function;
+};
+
+const PaginationBar = ({ pagination, onPageChange }: Props) => {
   const { limit, total } = pagination;
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loadedPage, setLoadedPage] = useState(1);
+
+  useEffect(() => {
+    if (currentPage !== loadedPage) {
+      onPageChange(currentPage);
+      setLoadedPage(currentPage);
+    }
+  }, [currentPage, loadedPage, setLoadedPage, onPageChange]);
 
   const lastPage = useMemo(() => Math.ceil(total / limit), [total, limit]);
 
@@ -29,29 +57,82 @@ const PaginationBar = ({ pagination }: Props) => {
         return pagesArray;
       }
     } else {
-      pagesArray.push(-1, currentPage - 1, currentPage, currentPage + 1);
+      const distance = 3 - Math.min(lastPage - currentPage, 2);
+      const middleValues = [
+        -2,
+        currentPage - distance,
+        currentPage - distance + 1,
+        currentPage - distance + 2,
+      ];
+
+      pagesArray.push(...middleValues);
     }
 
     if (currentPage <= lastPage - 4) {
       pagesArray.push(-1);
-    } else {
+    } else if (!pagesArray.includes(lastPage - 1)) {
       pagesArray.push(lastPage - 1);
     }
 
     return pagesArray;
   }, [currentPage, lastPage]);
 
+  const handleFirstPageClick = useCallback(() => {
+    setCurrentPage(1);
+  }, [setCurrentPage]);
+
+  const handleLastPageClick = useCallback(() => {
+    setCurrentPage(lastPage);
+  }, [lastPage, setCurrentPage]);
+
+  const handleMiddlePageClick = useCallback(
+    (item) => {
+      if (item > -1) {
+        setCurrentPage(item);
+        return;
+      }
+
+      if (item === -2) {
+        setCurrentPage(currentPage - 2);
+        return;
+      }
+      setCurrentPage(currentPage + 2);
+    },
+    [currentPage, setCurrentPage],
+  );
+
   return (
     <Container>
-      <Button>{'|<'}</Button>
-      <Button>{'<'}</Button>
-      <Button>1</Button>
+      <Button onClick={handleFirstPageClick}>{'|<'}</Button>
+      <Button onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}>
+        {'<'}
+      </Button>
+      <Button onClick={handleFirstPageClick} isActive={currentPage === 1}>
+        1
+      </Button>
       {middlePages.map((item) => (
-        <Button>{item > -1 ? item : '...'}</Button>
+        <Button
+          key={item}
+          onClick={() => handleMiddlePageClick(item)}
+          isActive={currentPage === item}
+        >
+          {item > -1 ? item : '...'}
+        </Button>
       ))}
-      {lastPage > 1 && <Button>{lastPage}</Button>}
-      <Button>{'>'}</Button>
-      <Button>{'>|'}</Button>
+      {lastPage > 1 && (
+        <Button
+          onClick={handleLastPageClick}
+          isActive={currentPage === lastPage}
+        >
+          {lastPage}
+        </Button>
+      )}
+      <Button
+        onClick={() => setCurrentPage(Math.min(currentPage + 1, lastPage))}
+      >
+        {'>'}
+      </Button>
+      <Button onClick={handleLastPageClick}>{'>|'}</Button>
     </Container>
   );
 };

@@ -27,22 +27,26 @@ const CharactersList: React.FC<Props> = () => {
   const [pagination, setPagination] = useState<Pagination>();
   const [dataProvider, setDataProvider] = useState<string>();
   const [characters, setCharacters] = useState<Character[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
   // usePagination(pagination);
 
-  const fetchData = useCallback(async () => {
-    const { data, attributionText } = await CharactersService.get();
-    const { results, ...paginationData } = data;
+  const fetchData = useCallback(
+    async (offset) => {
+      const { data, attributionText } = await CharactersService.get(offset);
+      const { results, ...paginationData } = data;
 
-    setCharacters(results);
-    setDataProvider(attributionText);
-    setPagination(paginationData);
-  }, [setCharacters, setDataProvider, setPagination]);
+      setCharacters(results);
+      setDataProvider(attributionText);
+      setPagination(paginationData);
+    },
+    [setCharacters, setDataProvider, setPagination],
+  );
 
   useEffect(() => {
-    fetchData();
+    fetchData(0);
   }, [fetchData]);
 
   const handleItemClick = useCallback(
@@ -58,6 +62,20 @@ const CharactersList: React.FC<Props> = () => {
     [characters, selectedIndex],
   );
 
+  const handlePageChange = useCallback(
+    (page) => {
+      if (pagination == null) {
+        return;
+      }
+
+      const { limit } = pagination;
+
+      const offset = (page - 1) * limit;
+      fetchData(offset);
+    },
+    [pagination, fetchData],
+  );
+
   return (
     <Container>
       <Characters>
@@ -70,7 +88,12 @@ const CharactersList: React.FC<Props> = () => {
         ))}
       </Characters>
 
-      {pagination != null && <PaginationBar pagination={pagination} />}
+      {pagination != null && (
+        <PaginationBar
+          pagination={pagination}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
         {selectedCharacter != null ? (

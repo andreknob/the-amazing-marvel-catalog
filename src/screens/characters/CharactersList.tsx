@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import Loading from '../../components/loading-spinner/LoadingSpinner';
 import Modal from '../../components/modal/Modal';
 import PaginationBar from '../../components/pagination-bar/PaginationBar';
 // import usePagination from '../../hooks/usePagination';
@@ -35,12 +36,14 @@ const CharactersList: React.FC<Props> = () => {
 
   const fetchData = useCallback(
     async (offset) => {
+      setIsLoading(true);
       const { data, attributionText } = await CharactersService.get(offset);
       const { results, ...paginationData } = data;
 
       setCharacters(results);
       setDataProvider(attributionText);
       setPagination(paginationData);
+      setIsLoading(false);
     },
     [setCharacters, setDataProvider, setPagination],
   );
@@ -77,23 +80,25 @@ const CharactersList: React.FC<Props> = () => {
   );
 
   return (
-    <Container>
-      <Characters>
-        {characters?.map((character, index) => (
-          <CharacterItem
-            key={character.id}
-            onClick={() => handleItemClick(index)}
-            character={character}
-          />
-        ))}
-      </Characters>
+    <>
+      <Container>
+        <Characters>
+          {characters?.map((character, index) => (
+            <CharacterItem
+              key={character.id}
+              onClick={() => handleItemClick(index)}
+              character={character}
+            />
+          ))}
+        </Characters>
 
-      {pagination != null && (
-        <PaginationBar
-          pagination={pagination}
-          onPageChange={handlePageChange}
-        />
-      )}
+        {pagination != null && (
+          <PaginationBar
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </Container>
 
       <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
         {selectedCharacter != null ? (
@@ -103,7 +108,9 @@ const CharactersList: React.FC<Props> = () => {
           />
         ) : null}
       </Modal>
-    </Container>
+
+      <Loading isLoading={isLoading} />
+    </>
   );
 };
 

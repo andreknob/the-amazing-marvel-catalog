@@ -6,6 +6,7 @@ const ItemContainer = styled.div`
   position: relative;
 
   border: 1px solid black;
+  border-radius: 3px;
   margin: 0 8px 16px 8px;
   flex: 0 1 400px;
   height: 450px;

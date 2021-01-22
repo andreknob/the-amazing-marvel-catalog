@@ -133,7 +133,8 @@ interface BodyProps {
 }
 
 const Body = styled.div<BodyProps>`
-  background: white;
+  background-color: #121214;
+  color: white;
   margin: 0 auto;
   width: 50%;
   border-radius: 3px;

@@ -14,15 +14,13 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   font-weight: bold;
   letter-spacing: 4px;
+  color: white;
 `;
 
 function Nav(): ReactElement {
   return (
     <nav>
       <Ul>
-        <StyledLink to="/">
-          <li>Home Page</li>
-        </StyledLink>
         <StyledLink to="/comics">
           <li>Comics</li>
         </StyledLink>

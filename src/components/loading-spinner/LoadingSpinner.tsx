@@ -16,8 +16,8 @@ const Container = styled.div`
 `;
 
 const Spinner = styled.div`
-  border: 16px solid #f3f3f3;
-  border-top: 16px solid #9f0000;
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #9f0000;
   border-radius: 50%;
   width: 75px;
   height: 75px;
@@ -46,7 +46,7 @@ const LoadingText = styled.div`
     content: 'Loading...';
     position: absolute;
     top: 18px;
-    left: 18px;
+    left: 8px;
 
     animation: pulse 2s linear infinite;
   }

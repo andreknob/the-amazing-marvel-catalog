@@ -5,6 +5,7 @@ import { Character } from '../../types/CharacterTypes';
 const Container = styled.div`
   position: relative;
   overflow: hidden;
+  border-radius: 3px;
 
   &:before {
     content: 'character';
@@ -12,7 +13,7 @@ const Container = styled.div`
     top: 20px;
     padding: 8px 48px 8px 40px;
     color: white;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(175, 0, 0, 0.9);
     transform: translateX(-30px) rotate(-35deg);
   }
 `;
@@ -26,7 +27,8 @@ const Header = styled.div`
   font-weight: bold;
   line-height: 65px;
   margin-bottom: 15px;
-  background: rgba(175, 0, 0, 0.6);
+  border-bottom: 2px solid #af0000;
+  background-color: #202024;
 `;
 
 const Body = styled.div`
@@ -40,17 +42,22 @@ const Footer = styled.div`
 
   color: white;
   padding: 16px 24px;
-  background: rgba(175, 0, 0, 0.6);
+  background-color: #202024;
+  border-top: 2px solid #af0000;
 `;
 
 const Description = styled.div`
   font-size: 20px;
   line-height: 24px;
   margin-left: 32px;
+  background-color: #202024;
+  padding: 16px;
+  border-radius: 3px;
 `;
 
 const Portrait = styled.img`
   width: 425px;
+  border-radius: 3px;
 `;
 
 type InfoProps = {

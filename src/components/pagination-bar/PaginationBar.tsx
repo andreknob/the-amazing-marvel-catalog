@@ -13,8 +13,9 @@ type ButtonProps = {
 
 const Button = styled.button<ButtonProps>`
   border: none;
-  background-color: white;
   cursor: pointer;
+  background-color: #121214;
+  color: white;
   padding: 8px;
   font-size: 18px;
   transition: background-color 0.2s;
@@ -23,7 +24,7 @@ const Button = styled.button<ButtonProps>`
   ${(props) => props.isActive && 'color: #00bcd4;'}
 
   &:hover {
-    background-color: #ddd;
+    background-color: #444;
   }
 `;
 

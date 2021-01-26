@@ -27,9 +27,12 @@
     "rules": {
         "prettier/prettier": ["error", { "endOfLine": "auto" }],
         "react/jsx-one-expression-per-line": "off",
+        "react/jsx-curly-newline": "off",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "linebreak-style": "off",
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": "error",
         "react/jsx-filename-extension": [
             1,
             {

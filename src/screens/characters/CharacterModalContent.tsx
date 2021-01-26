@@ -43,7 +43,6 @@ const Footer = styled.div`
   color: white;
   padding: 16px 24px;
   background-color: #202024;
-  border-top: 2px solid #af0000;
 `;
 
 const Description = styled.div`
@@ -58,6 +57,10 @@ const Description = styled.div`
 const Portrait = styled.img`
   width: 425px;
   border-radius: 3px;
+`;
+
+const Anchor = styled.a`
+  color: white;
 `;
 
 type InfoProps = {
@@ -89,7 +92,8 @@ const WikiLink: React.FC<WikiLinkProps> = ({ character }: WikiLinkProps) => {
 
   return (
     <>
-      Click <a href={link?.url}>here</a> to check {`${name}'s`} wiki page.
+      Click <Anchor href={link?.url}>here</Anchor> to check {`${name}'s`} wiki
+      page.
     </>
   );
 };

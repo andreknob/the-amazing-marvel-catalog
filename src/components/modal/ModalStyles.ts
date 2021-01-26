@@ -39,13 +39,15 @@ const fadeOut = `
 const roadRunnerIn = `
   @keyframes roadRunnerIn {
     0% {
-      transform: translateX(-1500px) skewX(30deg) scaleX(1.3);
+      transform: translateX(-1500px);
+      opacity: 0;
     }
     70% {
-      transform: translateX(30px) skewX(0deg) scaleX(0.9);
+      transform: translateX(30px);
+      opacity: 1;
     }
     100% {
-      transform: translateX(0px) skewX(0deg) scaleX(1);
+      transform: translateX(0px);
     }
   }
 `;
@@ -53,13 +55,15 @@ const roadRunnerIn = `
 const roadRunnerOut = `
   @keyframes roadRunnerOut {
     0% {
-      transform: translateX(0px) skewX(0deg) scaleX(1);
+      transform: translateX(0px);
     }
     30% {
-      transform: translateX(-30px) skewX(-5deg) scaleX(0.9);
+      transform: translateX(-30px);
+      opacity: 1;
     }
     100% {
-      transform: translateX(1500px) skewX(30deg) scaleX(1.3);
+      transform: translateX(1500px);
+      opacity: 0;
     }
   }
 `;
@@ -148,7 +152,7 @@ const Body = styled.div<BodyProps>`
 
     return `
           transform: translateX(-1500px);
-          animation: roadRunnerIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+          animation: roadRunnerIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
   
           ${
             props.animateOut &&

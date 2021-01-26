@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Character } from '../../types/CharacterTypes';
+import { Thumbnail } from '../../types/CommonTypes';
 
 const ItemContainer = styled.div`
   position: relative;
@@ -14,9 +14,15 @@ const ItemContainer = styled.div`
   cursor: pointer;
 `;
 
-type Props = {
-  character: Character;
+enum DisplayPropEnum {
+  title,
+  name,
+}
+
+type Props<T> = {
+  item: T;
   onClick: () => void;
+  displayProp: keyof typeof DisplayPropEnum;
 };
 
 const Portrait = styled.img`
@@ -38,9 +44,8 @@ const CardInfo = styled.div<CardInfoProps>`
   padding: 8px;
   color: white;
   width: 100%;
-  box-sizing: border-box;
 
-  transition: top 0.3s ease-out, background 0.3s;
+  transition: top 0.2s ease-out, background 0.3s;
 
   display: flex;
   flex-direction: column;
@@ -57,9 +62,15 @@ const ShowDetails = styled.div`
   align-items: center;
 `;
 
-const CharacterItem: React.FC<Props> = ({ character, onClick }: Props) => {
+type BaseT = {
+  thumbnail: Thumbnail;
+  title?: string;
+  name?: string;
+};
+
+function ListItem<T extends BaseT>({ item, displayProp, onClick }: Props<T>) {
   const [isHovering, setIsHovering] = useState(false);
-  const { thumbnail } = character;
+  const { thumbnail } = item;
 
   const handleMouseEnter = useCallback(() => setIsHovering(true), [
     setIsHovering,
@@ -75,17 +86,17 @@ const CharacterItem: React.FC<Props> = ({ character, onClick }: Props) => {
       onMouseLeave={handleMouseLeave}
     >
       <Portrait
-        alt={character.name}
+        alt={item[displayProp]}
         src={`${thumbnail.path}.${thumbnail.extension}`}
       />
       <CardInfo isHovering={isHovering}>
         <>
-          <Name>{character.name}</Name>
+          <Name>{item[displayProp]}</Name>
           {isHovering && <ShowDetails>Click to see details</ShowDetails>}
         </>
       </CardInfo>
     </ItemContainer>
   );
-};
+}
 
-export default CharacterItem;
+export default ListItem;

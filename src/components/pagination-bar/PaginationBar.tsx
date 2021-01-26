@@ -1,6 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Pagination } from '../../types/CharacterTypes';
+import { Link } from 'react-router-dom';
+import * as H from 'history';
+import { Pagination } from '../../types/CommonTypes';
+import usePaginationLogic from './usePaginationLogic';
 
 const Container = styled.div`
   width: fit-content;
@@ -8,10 +11,10 @@ const Container = styled.div`
 `;
 
 type ButtonProps = {
-  isActive?: boolean;
+  selected?: boolean;
 };
 
-const Button = styled.button<ButtonProps>`
+const Button = styled(Link)<ButtonProps>`
   border: none;
   cursor: pointer;
   background-color: #121214;
@@ -21,7 +24,7 @@ const Button = styled.button<ButtonProps>`
   transition: background-color 0.2s;
   margin: 0 2px;
 
-  ${(props) => props.isActive && 'color: #00bcd4;'}
+  ${(props) => props.selected && 'color: #00bcd4;'}
 
   &:hover {
     background-color: #444;
@@ -30,110 +33,75 @@ const Button = styled.button<ButtonProps>`
 
 type Props = {
   pagination: Pagination;
-  onPageChange: Function;
+  query: URLSearchParams;
 };
 
-const PaginationBar = ({ pagination, onPageChange }: Props) => {
+const PaginationBar = ({ pagination, query }: Props) => {
   const { limit, total } = pagination;
-  const [currentPage, setCurrentPage] = useState(1);
   const [loadedPage, setLoadedPage] = useState(1);
+
+  const currentPage = useMemo(() => Number(query.get('page') ?? 1), [query]);
 
   useEffect(() => {
     if (currentPage !== loadedPage) {
-      onPageChange(currentPage);
       setLoadedPage(currentPage);
     }
-  }, [currentPage, loadedPage, setLoadedPage, onPageChange]);
+  }, [currentPage, loadedPage, setLoadedPage]);
 
   const lastPage = useMemo(() => Math.ceil(total / limit), [total, limit]);
 
-  const middlePages = useMemo(() => {
-    const pagesArray = [];
-
-    if (currentPage < 5) {
-      const firstValues = [2, 3, 4, 5];
-      pagesArray.push(...firstValues.slice(0, lastPage - 1));
-
-      if (pagesArray.length < 4) {
-        return pagesArray;
-      }
-    } else {
-      const distance = 3 - Math.min(lastPage - currentPage, 2);
-      const middleValues = [
-        -2,
-        currentPage - distance,
-        currentPage - distance + 1,
-        currentPage - distance + 2,
-      ];
-
-      pagesArray.push(...middleValues);
-    }
-
-    if (currentPage <= lastPage - 4) {
-      pagesArray.push(-1);
-    } else if (!pagesArray.includes(lastPage - 1)) {
-      pagesArray.push(lastPage - 1);
-    }
-
-    return pagesArray;
-  }, [currentPage, lastPage]);
-
-  const handleFirstPageClick = useCallback(() => {
-    setCurrentPage(1);
-  }, [setCurrentPage]);
-
-  const handleLastPageClick = useCallback(() => {
-    setCurrentPage(lastPage);
-  }, [lastPage, setCurrentPage]);
-
-  const handleMiddlePageClick = useCallback(
-    (item) => {
-      if (item > -1) {
-        setCurrentPage(item);
-        return;
-      }
-
-      if (item === -2) {
-        setCurrentPage(currentPage - 2);
-        return;
-      }
-      setCurrentPage(currentPage + 2);
-    },
-    [currentPage, setCurrentPage],
+  const { middlePages, handleMiddlePageClick, getRoute } = usePaginationLogic(
+    currentPage,
+    lastPage,
   );
 
   return (
     <Container>
-      <Button onClick={handleFirstPageClick}>{'|<'}</Button>
-      <Button onClick={() => setCurrentPage(Math.max(currentPage - 1, 1))}>
+      <Button to={(location: H.Location) => getRoute(location, 1)}>
+        {'|<'}
+      </Button>
+      <Button
+        to={(location: H.Location) =>
+          getRoute(location, Math.max(currentPage - 1, 1))
+        }
+      >
         {'<'}
       </Button>
-      <Button onClick={handleFirstPageClick} isActive={currentPage === 1}>
+      <Button
+        to={(location: H.Location) => getRoute(location, 1)}
+        selected={currentPage === 1}
+      >
         1
       </Button>
       {middlePages.map((item) => (
         <Button
           key={item}
-          onClick={() => handleMiddlePageClick(item)}
-          isActive={currentPage === item}
+          to={(location: H.Location) =>
+            getRoute(location, handleMiddlePageClick(item))
+          }
+          selected={currentPage === item}
         >
           {item > -1 ? item : '...'}
         </Button>
       ))}
       {lastPage > 1 && (
         <Button
-          onClick={handleLastPageClick}
-          isActive={currentPage === lastPage}
+          to={(location: H.Location) => getRoute(location, lastPage)}
+          selected={currentPage === lastPage}
         >
           {lastPage}
         </Button>
       )}
       <Button
-        onClick={() => setCurrentPage(Math.min(currentPage + 1, lastPage))}
+        to={(location: H.Location) =>
+          getRoute(location, Math.min(currentPage + 1, lastPage))
+        }
       >
         {'>'}
       </Button>
-      <Button onClick={handleLastPageClick}>{'>|'}</Button>
+      <Button to={(location: H.Location) => getRoute(location, lastPage)}>
+        {'>|'}
+      </Button>
     </Container>
   );
 };

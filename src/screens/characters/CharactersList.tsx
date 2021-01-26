@@ -1,17 +1,22 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { RouteComponentProps } from 'react-router-dom';
+
 import Loading from '../../components/loading-spinner/LoadingSpinner';
 import Modal from '../../components/modal/Modal';
 import PaginationBar from '../../components/pagination-bar/PaginationBar';
-// import usePagination from '../../hooks/usePagination';
 import CharactersService from '../../services/CharactersService';
-import { Pagination, Character } from '../../types/CharacterTypes';
-import CharacterItem from './CharacterItem';
+import { Character } from '../../types/CharacterTypes';
+import { Pagination } from '../../types/CommonTypes';
 import CharacterModalContent from './CharacterModalContent';
+import useQuery from '../../hooks/useQuery';
+import ListItem from '../../components/list/ListItem';
+
+const PAGE_LIMIT = 20;
 
 const Container = styled.div`
   width: 70%;
-  margin: 0 auto;
+  margin: 32px auto 0 auto;
 `;
 
 const Characters = styled.div`
@@ -20,11 +25,7 @@ const Characters = styled.div`
   flex-wrap: wrap;
 `;
 
-interface Props {
-  name: number;
-}
-
-const CharactersList: React.FC<Props> = () => {
+function CharactersList({ location }: RouteComponentProps) {
   const [pagination, setPagination] = useState<Pagination>();
   const [dataProvider, setDataProvider] = useState<string>();
   const [characters, setCharacters] = useState<Character[]>([]);
@@ -32,24 +33,28 @@ const CharactersList: React.FC<Props> = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
-  // usePagination(pagination);
+  const query = useQuery(location.search);
 
-  const fetchData = useCallback(
-    async (offset) => {
-      setIsLoading(true);
-      const { data, attributionText } = await CharactersService.get(offset);
-      const { results, ...paginationData } = data;
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    const searchTerm = query.get('search');
+    const page = query.get('page') ?? 1;
 
-      setCharacters(results);
-      setDataProvider(attributionText);
-      setPagination(paginationData);
-      setIsLoading(false);
-    },
-    [setCharacters, setDataProvider, setPagination],
-  );
+    const offset = (Number(page) - 1) * PAGE_LIMIT;
+    const { data, attributionText } = await CharactersService.get(
+      offset,
+      searchTerm,
+    );
+    const { results, ...paginationData } = data;
+
+    setCharacters(results);
+    setDataProvider(attributionText);
+    setPagination(paginationData);
+    setIsLoading(false);
+  }, [setCharacters, setDataProvider, setPagination, query]);
 
   useEffect(() => {
-    fetchData(0);
+    fetchData();
   }, [fetchData]);
 
   const handleItemClick = useCallback(
@@ -65,38 +70,22 @@ const CharactersList: React.FC<Props> = () => {
     [characters, selectedIndex],
   );
 
-  const handlePageChange = useCallback(
-    (page) => {
-      if (pagination == null) {
-        return;
-      }
-
-      const { limit } = pagination;
-
-      const offset = (page - 1) * limit;
-      fetchData(offset);
-    },
-    [pagination, fetchData],
-  );
-
   return (
     <>
       <Container>
         <Characters>
           {characters?.map((character, index) => (
-            <CharacterItem
+            <ListItem<Character>
               key={character.id}
               onClick={() => handleItemClick(index)}
-              character={character}
+              item={character}
+              displayProp="name"
             />
           ))}
         </Characters>
 
         {pagination != null && (
-          <PaginationBar
-            pagination={pagination}
-            onPageChange={handlePageChange}
-          />
+          <PaginationBar pagination={pagination} query={query} />
         )}
       </Container>
 
@@ -112,6 +101,6 @@ const CharactersList: React.FC<Props> = () => {
       <Loading isLoading={isLoading} />
     </>
   );
-};
+}
 
 export default CharactersList;

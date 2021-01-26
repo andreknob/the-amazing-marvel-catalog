@@ -1,7 +1,7 @@
 import { Thumbnail } from './CommonTypes';
 
 type Series = {
-  available: number;
+  name: string;
 };
 
 type Stories = {
@@ -13,9 +13,19 @@ type Link = {
   url: string;
 };
 
-export type Character = {
-  id: number;
+type Creator = {
   name: string;
+  role: string;
+};
+
+type Creators = {
+  items: Creator[];
+};
+
+export type Comic = {
+  id: number;
+  title: string;
+  creators: Creators;
   description: string;
   resourceURI: string;
   thumbnail: Thumbnail;

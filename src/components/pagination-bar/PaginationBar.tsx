@@ -17,17 +17,17 @@ type ButtonProps = {
 const Button = styled(Link)<ButtonProps>`
   border: none;
   cursor: pointer;
-  background-color: #121214;
-  color: white;
+  background-color: ${(props) => props.theme.backgroundSecondary};
+  color: ${(props) => props.theme.primary};
   padding: 8px;
   font-size: 18px;
   transition: background-color 0.2s;
   margin: 0 2px;
 
-  ${(props) => props.selected && 'color: #00bcd4;'}
+  ${(props) => props.selected && `color: ${props.theme.secondary};`}
 
   &:hover {
-    background-color: #444;
+    background-color: ${(props) => props.theme.hover};
   }
 `;
 

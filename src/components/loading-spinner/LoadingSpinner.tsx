@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   position: fixed;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(45px);
   height: 100%;
   width: 100%;
   top: 0;
@@ -39,14 +40,14 @@ const Spinner = styled.div`
 `;
 
 const LoadingText = styled.div`
-  color: white;
+  color: ${(props) => props.theme.primary};
   position: relative;
 
   &:after {
     content: 'Loading...';
     position: absolute;
     top: 18px;
-    left: 8px;
+    left: 0;
 
     animation: pulse 2s linear infinite;
   }

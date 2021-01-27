@@ -108,7 +108,8 @@ interface BackgroundProps {
 const Background = styled.div<BackgroundProps>`
   display: table-cell;
   vertical-align: middle;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(45px);
 
   ${(props) => {
     if (!props.isOpen) {
@@ -116,7 +117,6 @@ const Background = styled.div<BackgroundProps>`
     }
 
     return `
-        background: rgba(0, 0, 0, 0);
         animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 
         ${
@@ -137,8 +137,8 @@ interface BodyProps {
 }
 
 const Body = styled.div<BodyProps>`
-  background-color: #121214;
-  color: white;
+  background-color: ${(props) => props.theme.backgroundSecondary};
+  color: ${(props) => props.theme.primary};
   margin: 0 auto;
   width: 50%;
   border-radius: 3px;
@@ -170,7 +170,7 @@ const CloseButton = styled.div`
   position: absolute;
   top: 2px;
   right: 8px;
-  color: white;
+  color: ${(props) => props.theme.primary};
   font-size: 24px;
   cursor: pointer;
 `;

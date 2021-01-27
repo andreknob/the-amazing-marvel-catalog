@@ -12,7 +12,7 @@ const Container = styled.div`
     position: absolute;
     top: 20px;
     padding: 8px 48px 8px 40px;
-    color: white;
+    color: ${(props) => props.theme.primary};
     background: rgba(175, 0, 0, 0.9);
     transform: translateX(-30px) rotate(-35deg);
   }
@@ -22,13 +22,13 @@ const Header = styled.div`
   display: flex;
   justify-content: space-around;
 
-  color: white;
+  color: ${(props) => props.theme.primary};
   font-size: 30px;
   font-weight: bold;
   line-height: 65px;
   margin-bottom: 15px;
-  border-bottom: 2px solid #af0000;
-  background-color: #202024;
+  border-bottom: 2px solid ${(props) => props.theme.secondary};
+  background-color: ${(props) => props.theme.backgroundPrimary};
 `;
 
 const Body = styled.div`
@@ -40,16 +40,16 @@ const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
 
-  color: white;
+  color: ${(props) => props.theme.primary};
   padding: 16px 24px;
-  background-color: #202024;
+  background-color: ${(props) => props.theme.backgroundPrimary};
 `;
 
 const Description = styled.div`
   font-size: 20px;
   line-height: 24px;
   margin-left: 32px;
-  background-color: #202024;
+  background-color: ${(props) => props.theme.backgroundPrimary};
   padding: 16px;
   border-radius: 3px;
 `;
@@ -60,7 +60,7 @@ const Portrait = styled.img`
 `;
 
 const Anchor = styled.a`
-  color: white;
+  color: ${(props) => props.theme.primary};
 `;
 
 type InfoProps = {

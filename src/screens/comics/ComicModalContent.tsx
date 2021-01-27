@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import ReactHtmlParser from 'react-html-parser';
 import { Comic } from '../../types/ComicTypes';
 
 const Container = styled.div`
@@ -12,7 +13,7 @@ const Container = styled.div`
     position: absolute;
     top: 20px;
     padding: 8px 72px 8px 64px;
-    color: white;
+    color: ${(props) => props.theme.primary};
     background: rgba(175, 0, 0, 0.9);
     transform: translateX(-40px) rotate(-40deg);
   }
@@ -22,13 +23,13 @@ const Header = styled.div`
   display: flex;
   justify-content: space-around;
 
-  color: white;
+  color: ${(props) => props.theme.primary};
   font-size: 30px;
   font-weight: bold;
   line-height: 65px;
   margin-bottom: 15px;
-  border-bottom: 2px solid #af0000;
-  background-color: #202024;
+  border-bottom: 2px solid ${(props) => props.theme.secondary};
+  background-color: ${(props) => props.theme.backgroundPrimary};
 `;
 
 const Body = styled.div`
@@ -40,16 +41,16 @@ const Footer = styled.div`
   display: flex;
   justify-content: flex-end;
 
-  color: white;
+  color: ${(props) => props.theme.primary};
   padding: 16px 24px;
-  background-color: #202024;
+  background-color: ${(props) => props.theme.backgroundPrimary};
 `;
 
 const Description = styled.div`
   font-size: 20px;
   line-height: 24px;
   margin-left: 32px;
-  background-color: #202024;
+  background-color: ${(props) => props.theme.backgroundPrimary};
   padding: 16px;
   border-radius: 3px;
   max-height: 655px;
@@ -67,7 +68,7 @@ const Li = styled.li`
 `;
 
 const Anchor = styled.a`
-  color: white;
+  color: ${(props) => props.theme.primary};
 `;
 
 type InfoProps = {
@@ -138,8 +139,7 @@ const ComicModalContent: React.FC<Props> = ({ comic, dataProvider }: Props) => {
           src={`${thumbnail.path}.${thumbnail.extension}`}
         />
         <Description>
-          {/* eslint-disable-next-line react/no-danger */}
-          <div dangerouslySetInnerHTML={{ __html: description }} />
+          <div>{ReactHtmlParser(description)}</div>
           <Info comic={comic} />
           <DetailLink comic={comic} />
         </Description>

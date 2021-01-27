@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
 
 const Container = styled.div`
-  background-color: #202024;
+  background-color: ${(props) => props.theme.backgroundPrimary};
   height: 20%;
-  border-bottom: 2px solid #af0000;
+  border-bottom: 2px solid ${(props) => props.theme.secondary};
 `;
 
 const CenteredContent = styled.div`
@@ -29,10 +29,10 @@ const ButtonContainer = styled.div`
 const Button = styled(Link)`
   margin: 0 0 32px 16px;
   padding: 8px 16px;
-  border: 2px solid #af0000;
+  border: 2px solid ${(props) => props.theme.secondary};
   border-radius: 4px;
-  color: white;
-  background-color: #202024;
+  color: ${(props) => props.theme.primary};
+  background-color: ${(props) => props.theme.backgroundPrimary};
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
@@ -41,8 +41,8 @@ const Button = styled(Link)`
   transition: all 0.2s linear;
 
   &:hover {
-    background-color: #444;
-    border: 2px solid #444;
+    background-color: ${(props) => props.theme.hover};
+    border: 2px solid ${(props) => props.theme.hover};
   }
 `;
 

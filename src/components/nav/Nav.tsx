@@ -14,9 +14,9 @@ const StyledLink = styled(Link)`
   font-size: 22px;
   font-weight: bold;
   letter-spacing: 4px;
-  color: white;
+  color: ${(props) => props.theme.primary};
   padding: 8px;
-  border-bottom: 2px solid #af0000;
+  border-bottom: 2px solid ${(props) => props.theme.secondary};
 
   transition: all 0.2s linear;
 
@@ -24,8 +24,8 @@ const StyledLink = styled(Link)`
   top: 2px;
 
   &:hover {
-    color: #af0000;
-    border-bottom: 2px solid #202024;
+    color: ${(props) => props.theme.secondary};
+    border-bottom: 2px solid ${(props) => props.theme.backgroundPrimary};
   }
 `;
 

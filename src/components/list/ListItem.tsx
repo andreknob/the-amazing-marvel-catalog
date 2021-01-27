@@ -40,9 +40,10 @@ const CardInfo = styled.div<CardInfoProps>`
   top: ${(props) => (props.isHovering ? '0' : '90%')};
   bottom: 0;
 
-  background: rgba(0, 0, 0, ${(props) => (props.isHovering ? '0.9' : '0.5')});
+  background: rgba(0, 0, 0, ${(props) => (props.isHovering ? '0.7' : '0.4')});
+  backdrop-filter: blur(45px);
   padding: 8px;
-  color: white;
+  color: ${(props) => props.theme.primary};
   width: 100%;
 
   transition: top 0.2s ease-out, background 0.3s;
@@ -51,8 +52,15 @@ const CardInfo = styled.div<CardInfoProps>`
   flex-direction: column;
 `;
 
-const Name = styled.span`
+type SpanProps = {
+  isHovering: boolean;
+};
+
+const Span = styled.span<SpanProps>`
   padding: 8px;
+  white-space: ${(props) => (props.isHovering ? 'initial' : 'nowrap')};
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const ShowDetails = styled.div`
@@ -91,7 +99,7 @@ function ListItem<T extends BaseT>({ item, displayProp, onClick }: Props<T>) {
       />
       <CardInfo isHovering={isHovering}>
         <>
-          <Name>{item[displayProp]}</Name>
+          <Span isHovering={isHovering}>{item[displayProp]}</Span>
           {isHovering && <ShowDetails>Click to see details</ShowDetails>}
         </>
       </CardInfo>

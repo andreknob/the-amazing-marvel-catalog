@@ -1,19 +1,5 @@
 import styled from 'styled-components';
 
-const quickScaleDown = `
-  @keyframes quickScaleDown {
-    0% {
-      transform: scale(1);
-    }
-    99.9% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(0);
-    }
-  }
-`;
-
 const fadeIn = `
   @keyframes fadeIn {
     0% {
@@ -88,16 +74,8 @@ const Container = styled.div<ContainerProps>`
       return null;
     }
 
-    return `
-        transform: scale(1);
-        ${
-          props.animateOut &&
-          `animation: quickScaleDown 0s 0.5s linear forwards;`
-        }
-    `;
+    return 'transform: scale(1);';
   }}
-
-  ${quickScaleDown}
 `;
 
 interface BackgroundProps {
@@ -108,8 +86,7 @@ interface BackgroundProps {
 const Background = styled.div<BackgroundProps>`
   display: table-cell;
   vertical-align: middle;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(45px);
+  backdrop-filter: blur(0px);
 
   ${(props) => {
     if (!props.isOpen) {
@@ -118,10 +95,13 @@ const Background = styled.div<BackgroundProps>`
 
     return `
         animation: fadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        backdrop-filter: blur(45px);
 
         ${
           props.animateOut &&
-          `animation: fadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;`
+          `animation: fadeOut 0.5s ease-in forwards;
+          backdrop-filter: blur(0px);
+          `
         }
     `;
   }}

@@ -15,7 +15,7 @@ function Modal({ isOpen, setIsModalOpen, children }: ModalProps) {
       setTimeout(() => {
         setIsModalOpen(false);
         setAnimateOut(false);
-      }, 300);
+      }, 500);
     }
   }, [isOpen, setIsModalOpen, animateOut, setAnimateOut]);
 

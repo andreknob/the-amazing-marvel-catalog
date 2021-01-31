@@ -1,34 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import * as H from 'history';
 import { Pagination } from '../../types/CommonTypes';
 import usePaginationLogic from './usePaginationLogic';
+import BarButton from '../bar-button/BarButton';
 
 const Container = styled.div`
   width: fit-content;
   margin: 48px auto;
-`;
-
-type ButtonProps = {
-  selected?: boolean;
-};
-
-const Button = styled(Link)<ButtonProps>`
-  border: none;
-  cursor: pointer;
-  background-color: ${(props) => props.theme.backgroundSecondary};
-  color: ${(props) => props.theme.primary};
-  padding: 8px;
-  font-size: 18px;
-  transition: background-color 0.2s;
-  margin: 0 2px;
-
-  ${(props) => props.selected && `color: ${props.theme.secondary};`}
-
-  &:hover {
-    background-color: ${(props) => props.theme.hover};
-  }
 `;
 
 type Props = {
@@ -57,24 +36,24 @@ const PaginationBar = ({ pagination, query }: Props) => {
 
   return (
     <Container>
-      <Button to={(location: H.Location) => getRoute(location, 1)}>
+      <BarButton to={(location: H.Location) => getRoute(location, 1)}>
         {'|<'}
-      </Button>
-      <Button
+      </BarButton>
+      <BarButton
         to={(location: H.Location) =>
           getRoute(location, Math.max(currentPage - 1, 1))
         }
       >
         {'<'}
-      </Button>
-      <Button
+      </BarButton>
+      <BarButton
         to={(location: H.Location) => getRoute(location, 1)}
         selected={currentPage === 1}
       >
         1
-      </Button>
+      </BarButton>
       {middlePages.map((item) => (
-        <Button
+        <BarButton
           key={item}
           to={(location: H.Location) =>
             getRoute(location, handleMiddlePageClick(item))
@@ -82,26 +61,26 @@ const PaginationBar = ({ pagination, query }: Props) => {
           selected={currentPage === item}
         >
           {item > -1 ? item : '...'}
-        </Button>
+        </BarButton>
       ))}
       {lastPage > 1 && (
-        <Button
+        <BarButton
           to={(location: H.Location) => getRoute(location, lastPage)}
           selected={currentPage === lastPage}
         >
           {lastPage}
-        </Button>
+        </BarButton>
       )}
-      <Button
+      <BarButton
         to={(location: H.Location) =>
           getRoute(location, Math.min(currentPage + 1, lastPage))
         }
       >
         {'>'}
-      </Button>
-      <Button to={(location: H.Location) => getRoute(location, lastPage)}>
+      </BarButton>
+      <BarButton to={(location: H.Location) => getRoute(location, lastPage)}>
         {'>|'}
-      </Button>
+      </BarButton>
     </Container>
   );
 };

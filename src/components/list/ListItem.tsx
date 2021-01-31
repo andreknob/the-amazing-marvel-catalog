@@ -31,11 +31,11 @@ const Portrait = styled.img`
   object-fit: cover;
 `;
 
-type CardInfoProps = {
+type HoveringProps = {
   isHovering: boolean;
 };
 
-const CardInfo = styled.div<CardInfoProps>`
+const CardInfo = styled.div<HoveringProps>`
   position: absolute;
   top: ${(props) => (props.isHovering ? '0' : '90%')};
   bottom: 0;
@@ -50,6 +50,24 @@ const CardInfo = styled.div<CardInfoProps>`
 
   display: flex;
   flex-direction: column;
+`;
+
+const FavoriteSection = styled.div<HoveringProps>`
+  position: absolute;
+  top: 90%;
+  bottom: 0;
+
+  background: rgb(0, 0, 0, 0.3);
+  padding: 8px;
+  color: ${(props) => props.theme.primary};
+  width: 100%;
+
+  transition: background 0.3s;
+
+  display: ${(props) => (props.isHovering ? 'flex' : 'none')};
+  flex-direction: row-reverse;
+  align-items: center;
+  z-index: 100;
 `;
 
 type SpanProps = {
@@ -87,6 +105,8 @@ function ListItem<T extends BaseT>({ item, displayProp, onClick }: Props<T>) {
     setIsHovering,
   ]);
 
+  const handleFavorite = useCallback((e) => e.stopPropagation(), []);
+
   return (
     <ItemContainer
       onClick={onClick}
@@ -103,6 +123,9 @@ function ListItem<T extends BaseT>({ item, displayProp, onClick }: Props<T>) {
           {isHovering && <ShowDetails>Click to see details</ShowDetails>}
         </>
       </CardInfo>
+      <FavoriteSection isHovering={isHovering} onClick={handleFavorite}>
+        Favorite this
+      </FavoriteSection>
     </ItemContainer>
   );
 }

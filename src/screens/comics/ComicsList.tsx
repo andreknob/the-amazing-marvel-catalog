@@ -11,6 +11,7 @@ import { Pagination } from '../../types/CommonTypes';
 import ComicModalContent from './ComicModalContent';
 import useQuery from '../../hooks/useQuery';
 import ListItem from '../../components/list/ListItem';
+import LetterFilterBar from '../../components/letter-filter-bar/LetterFilterBar';
 
 const PAGE_LIMIT = 20;
 
@@ -70,9 +71,16 @@ function ComicsList({ location }: RouteComponentProps) {
     [comics, selectedIndex],
   );
 
+  const LetterFilterBarElement = <LetterFilterBar query={query} />;
+  const PaginationBarElement = pagination != null && (
+    <PaginationBar pagination={pagination} query={query} />
+  );
+
   return (
     <>
       <Container>
+        {LetterFilterBarElement}
+        {PaginationBarElement}
         <Comics>
           {comics?.map((comic, index) => (
             <ListItem<Comic>
@@ -84,9 +92,8 @@ function ComicsList({ location }: RouteComponentProps) {
           ))}
         </Comics>
 
-        {pagination != null && (
-          <PaginationBar pagination={pagination} query={query} />
-        )}
+        {PaginationBarElement}
+        {LetterFilterBarElement}
       </Container>
 
       <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>

@@ -11,6 +11,7 @@ import { Pagination } from '../../types/CommonTypes';
 import CharacterModalContent from './CharacterModalContent';
 import useQuery from '../../hooks/useQuery';
 import ListItem from '../../components/list/ListItem';
+import LetterFilterBar from '../../components/letter-filter-bar/LetterFilterBar';
 
 const PAGE_LIMIT = 20;
 
@@ -70,9 +71,17 @@ function CharactersList({ location }: RouteComponentProps) {
     [characters, selectedIndex],
   );
 
+  const LetterFilterBarElement = <LetterFilterBar query={query} />;
+  const PaginationBarElement = pagination != null && (
+    <PaginationBar pagination={pagination} query={query} />
+  );
+
   return (
     <>
       <Container>
+        {LetterFilterBarElement}
+        {PaginationBarElement}
+
         <Characters>
           {characters?.map((character, index) => (
             <ListItem<Character>
@@ -84,9 +93,8 @@ function CharactersList({ location }: RouteComponentProps) {
           ))}
         </Characters>
 
-        {pagination != null && (
-          <PaginationBar pagination={pagination} query={query} />
-        )}
+        {PaginationBarElement}
+        {LetterFilterBarElement}
       </Container>
 
       <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>

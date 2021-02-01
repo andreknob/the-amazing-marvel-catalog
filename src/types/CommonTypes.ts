@@ -19,3 +19,16 @@ export type Thumbnail = {
   path: string;
   extension: string;
 };
+
+export type GenericModel = {
+  id: number;
+  name?: string;
+  title?: string;
+  thumbnail: Thumbnail;
+};
+
+export type Favorite<T> = {
+  id: number;
+  data: T;
+  timeAdded: number;
+};

@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Thumbnail } from '../../types/CommonTypes';
+import { GenericModel } from '../../types/CommonTypes';
+import FavoriteSection from '../favorite-section/FavoriteSection';
 
 const ItemContainer = styled.div`
   position: relative;
@@ -13,17 +14,6 @@ const ItemContainer = styled.div`
   overflow: hidden;
   cursor: pointer;
 `;
-
-enum DisplayPropEnum {
-  title,
-  name,
-}
-
-type Props<T> = {
-  item: T;
-  onClick: () => void;
-  displayProp: keyof typeof DisplayPropEnum;
-};
 
 const Portrait = styled.img`
   width: 100%;
@@ -52,24 +42,6 @@ const CardInfo = styled.div<HoveringProps>`
   flex-direction: column;
 `;
 
-const FavoriteSection = styled.div<HoveringProps>`
-  position: absolute;
-  top: 90%;
-  bottom: 0;
-
-  background: rgb(0, 0, 0, 0.3);
-  padding: 8px;
-  color: ${(props) => props.theme.primary};
-  width: 100%;
-
-  transition: background 0.3s;
-
-  display: ${(props) => (props.isHovering ? 'flex' : 'none')};
-  flex-direction: row-reverse;
-  align-items: center;
-  z-index: 100;
-`;
-
 type SpanProps = {
   isHovering: boolean;
 };
@@ -88,13 +60,22 @@ const ShowDetails = styled.div`
   align-items: center;
 `;
 
-type BaseT = {
-  thumbnail: Thumbnail;
-  title?: string;
-  name?: string;
+enum DisplayPropEnum {
+  title,
+  name,
+}
+
+type Props<T> = {
+  item: T;
+  onClick: () => void;
+  displayProp: keyof typeof DisplayPropEnum;
 };
 
-function ListItem<T extends BaseT>({ item, displayProp, onClick }: Props<T>) {
+function ListItem<T extends GenericModel>({
+  item,
+  displayProp,
+  onClick,
+}: Props<T>) {
   const [isHovering, setIsHovering] = useState(false);
   const { thumbnail } = item;
 
@@ -104,8 +85,6 @@ function ListItem<T extends BaseT>({ item, displayProp, onClick }: Props<T>) {
   const handleMouseLeave = useCallback(() => setIsHovering(false), [
     setIsHovering,
   ]);
-
-  const handleFavorite = useCallback((e) => e.stopPropagation(), []);
 
   return (
     <ItemContainer
@@ -123,9 +102,7 @@ function ListItem<T extends BaseT>({ item, displayProp, onClick }: Props<T>) {
           {isHovering && <ShowDetails>Click to see details</ShowDetails>}
         </>
       </CardInfo>
-      <FavoriteSection isHovering={isHovering} onClick={handleFavorite}>
-        Favorite this
-      </FavoriteSection>
+      <FavoriteSection item={item} isHovering={isHovering} />
     </ItemContainer>
   );
 }

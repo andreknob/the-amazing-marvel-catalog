@@ -28,6 +28,7 @@
         "prettier/prettier": ["error", { "endOfLine": "auto" }],
         "react/jsx-one-expression-per-line": "off",
         "react/jsx-curly-newline": "off",
+        "react/require-default-props": "off",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "linebreak-style": "off",

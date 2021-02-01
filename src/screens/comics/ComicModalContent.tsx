@@ -124,7 +124,7 @@ function DetailLink({ comic }: DetailLinkProps) {
 
 interface Props {
   comic: Comic;
-  dataProvider: string | undefined;
+  dataProvider?: string | undefined;
 }
 
 const ComicModalContent: React.FC<Props> = ({ comic, dataProvider }: Props) => {

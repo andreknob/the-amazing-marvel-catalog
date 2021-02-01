@@ -5,6 +5,7 @@ import AppBar from './components/app-bar/AppBar';
 import Home from './screens/home/Home';
 import ComicsList from './screens/comics/ComicsList';
 import CharactersList from './screens/characters/CharactersList';
+import ComicsFavoritesList from './screens/comics/favorites/ComicFavoritesList';
 
 const theme = {
   primary: 'white',
@@ -22,6 +23,11 @@ function App(): ReactElement {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/comics" exact component={ComicsList} />
+          <Route
+            path="/comics/favorites"
+            exact
+            component={ComicsFavoritesList}
+          />
           <Route path="/characters" exact component={CharactersList} />
         </Switch>
       </Router>

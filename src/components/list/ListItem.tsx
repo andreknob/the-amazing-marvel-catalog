@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { GenericModel } from '../../types/CommonTypes';
+import { Character } from '../../types/CharacterTypes';
+import { Comic } from '../../types/ComicTypes';
+import { Favorite, GenericModel } from '../../types/CommonTypes';
 import FavoriteSection from '../favorite-section/FavoriteSection';
 
 const ItemContainer = styled.div`
@@ -69,12 +71,14 @@ type Props<T> = {
   item: T;
   onClick: () => void;
   displayProp: keyof typeof DisplayPropEnum;
+  onUnfavorite?: (item: Favorite<Comic | Character>) => void;
 };
 
 function ListItem<T extends GenericModel>({
   item,
   displayProp,
   onClick,
+  onUnfavorite,
 }: Props<T>) {
   const [isHovering, setIsHovering] = useState(false);
   const { thumbnail } = item;
@@ -102,7 +106,11 @@ function ListItem<T extends GenericModel>({
           {isHovering && <ShowDetails>Click to see details</ShowDetails>}
         </>
       </CardInfo>
-      <FavoriteSection item={item} isHovering={isHovering} />
+      <FavoriteSection
+        item={item}
+        isHovering={isHovering}
+        onUnfavorite={onUnfavorite}
+      />
     </ItemContainer>
   );
 }

@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
+import Button from '../button/Button';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.backgroundPrimary};
@@ -26,24 +27,9 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
 `;
 
-const Button = styled(Link)`
-  margin: 0 0 32px 16px;
-  padding: 8px 16px;
-  border: 2px solid ${(props) => props.theme.secondary};
-  border-radius: 4px;
+const StyledLink = styled(Link)`
   color: ${(props) => props.theme.primary};
-  background-color: ${(props) => props.theme.backgroundPrimary};
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  letter-spacing: 2px;
   text-decoration: none;
-  transition: all 0.2s linear;
-
-  &:hover {
-    background-color: ${(props) => props.theme.hover};
-    border: 2px solid ${(props) => props.theme.hover};
-  }
 `;
 
 const Label = styled.span`
@@ -70,9 +56,15 @@ const AppBar: React.FC<Props> = () => {
         <Label>The Amazing Marvel Catalog Search</Label>
         <Input value={searchTerm} onChange={handleChange} />
         <ButtonContainer>
-          <Button to={`/comics?search=${searchTerm}`}>Search Comics</Button>
-          <Button to={`/characters?search=${searchTerm}`}>
-            Search Characters
+          <Button>
+            <StyledLink to={`/comics?search=${searchTerm}`}>
+              Search Comics
+            </StyledLink>
+          </Button>
+          <Button>
+            <StyledLink to={`/characters?search=${searchTerm}`}>
+              Search Characters
+            </StyledLink>
           </Button>
         </ButtonContainer>
         <Nav />

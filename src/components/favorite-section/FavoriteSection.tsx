@@ -38,11 +38,13 @@ const Span = styled.span`
 type Props<T> = {
   item: T;
   isHovering: boolean;
+  onUnfavorite?: (item: Favorite<Comic | Character>) => void;
 };
 
 function FavoriteSection<T extends GenericModel>({
   item,
   isHovering,
+  onUnfavorite,
 }: Props<T>) {
   const location = useLocation();
 
@@ -67,8 +69,12 @@ function FavoriteSection<T extends GenericModel>({
 
       if (favoriteIndex >= 0) {
         newFavorited = [...favorites];
-        newFavorited.splice(favoriteIndex, 1);
+        const spliced = newFavorited.splice(favoriteIndex, 1)[0];
         setIsFavorite(false);
+
+        if (typeof onUnfavorite === 'function') {
+          onUnfavorite(spliced);
+        }
       } else {
         newFavorited = [
           ...favorites,
@@ -79,7 +85,7 @@ function FavoriteSection<T extends GenericModel>({
 
       localStorage.setItem(favoritesKey.current, JSON.stringify(newFavorited));
     },
-    [setIsFavorite, item],
+    [setIsFavorite, item, onUnfavorite],
   );
 
   return (

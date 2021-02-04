@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
+import SearchIcon from '@material-ui/icons/Search';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Nav from '../nav/Nav';
-import Button from '../button/Button';
+import Button, { ButtonContainer, ButtonChildLabel } from '../button/Button';
 
 const Container = styled.div`
   background-color: ${(props) => props.theme.backgroundPrimary};
@@ -20,11 +21,6 @@ const Input = styled.input`
   margin-bottom: 16px;
   font-size: 22px;
   padding: 8px;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const StyledLink = styled(Link)`
@@ -57,14 +53,24 @@ const AppBar: React.FC<Props> = () => {
         <Input value={searchTerm} onChange={handleChange} />
         <ButtonContainer>
           <Button>
-            <StyledLink to={`/comics?search=${searchTerm}`}>
-              Search Comics
-            </StyledLink>
+            <>
+              <SearchIcon />
+              <ButtonChildLabel>
+                <StyledLink to={`/comics?search=${searchTerm}`}>
+                  Search Comics
+                </StyledLink>
+              </ButtonChildLabel>
+            </>
           </Button>
           <Button>
-            <StyledLink to={`/characters?search=${searchTerm}`}>
-              Search Characters
-            </StyledLink>
+            <>
+              <SearchIcon />
+              <ButtonChildLabel>
+                <StyledLink to={`/characters?search=${searchTerm}`}>
+                  Search Characters
+                </StyledLink>
+              </ButtonChildLabel>
+            </>
           </Button>
         </ButtonContainer>
         <Nav />

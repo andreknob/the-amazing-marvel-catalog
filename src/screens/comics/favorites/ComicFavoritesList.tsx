@@ -5,25 +5,29 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import {
+  ArrowDropUp as ArrowDropUpIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+  Delete as DeleteIcon,
+  Sort as SortIcon,
+  SortByAlpha as SortByAlphaIcon,
+} from '@material-ui/icons';
 import styled from 'styled-components';
-
 import { useLocation } from 'react-router-dom';
+
 import Modal from '../../../components/modal/Modal';
 import ListItem from '../../../components/list/ListItem';
 import ComicModalContent from '../ComicModalContent';
 import { Favorite } from '../../../types/CommonTypes';
 import { Comic } from '../../../types/ComicTypes';
-import Button from '../../../components/button/Button';
+import Button, {
+  ButtonContainer,
+  ButtonChildLabel,
+} from '../../../components/button/Button';
 
 const Container = styled.div`
   width: 70%;
   margin: 32px auto 0 auto;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 8px;
 `;
 
 const Comics = styled.div`
@@ -32,13 +36,56 @@ const Comics = styled.div`
   flex-wrap: wrap;
 `;
 
+const StyledButtonContainer = styled(ButtonContainer)`
+  margin-right: 8px;
+`;
+
+const StyledButtonChildLabel = styled(ButtonChildLabel)`
+  margin-right: 8px;
+`;
+
+function compareString(a: Favorite<Comic>, b: Favorite<Comic>) {
+  if (a.data.title < b.data.title) {
+    return -1;
+  }
+  if (a.data.title === b.data.title) {
+    return 0;
+  }
+  return 1;
+
+  /* 
+  (comicB, comicA) => {
+      if (isSortingByName) {
+        const titleB = comicB.data.title;
+        const titleA = comicA.data.title;
+
+        return isAscendingSorting
+          ? compareString(titleA, titleB)
+          : compareString(titleB, titleA);
+      }
+
+      return isAscendingSorting
+        ? comicA.timeAdded - comicB.timeAdded
+        : comicB.timeAdded - comicA.timeAdded;
+    }
+    */
+}
+
 function ComicsFavoritesList() {
   const [comics, setComics] = useState<Favorite<Comic>[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>();
+  const [isSortingByName, setIsSortingByName] = useState(true);
+  const [isAscendingSorting, setIsAscendingSorting] = useState(true);
 
   const location = useLocation();
   const favoritesKey = useRef(`${location.pathname.split('/')[1]}Favorites`);
+
+  useEffect(() => {
+    const sortedComics = comics.sort(compareString);
+
+    setComics(sortedComics);
+  }, [isSortingByName, isAscendingSorting, comics, setComics]);
 
   useEffect(() => {
     const favorites: Favorite<Comic>[] = JSON.parse(
@@ -76,12 +123,75 @@ function ComicsFavoritesList() {
     [comics, selectedIndex],
   );
 
+  const handleSortByName = useCallback(() => {
+    if (isSortingByName) {
+      if (isAscendingSorting) {
+        setIsAscendingSorting(false);
+        return;
+      }
+    }
+    setIsSortingByName(true);
+    setIsAscendingSorting(true);
+  }, [
+    isSortingByName,
+    isAscendingSorting,
+    setIsSortingByName,
+    setIsAscendingSorting,
+  ]);
+
+  const handleSortByTime = useCallback(() => {
+    if (!isSortingByName) {
+      if (isAscendingSorting) {
+        setIsAscendingSorting(false);
+        return;
+      }
+    }
+    setIsSortingByName(false);
+    setIsAscendingSorting(true);
+  }, [
+    isSortingByName,
+    isAscendingSorting,
+    setIsSortingByName,
+    setIsAscendingSorting,
+  ]);
+
   return (
     <>
       <Container>
-        <ButtonContainer>
-          <Button onClick={handleUnfavoriteAll}>Unfavorite all</Button>
-        </ButtonContainer>
+        <StyledButtonContainer>
+          <Button onClick={handleSortByName} secondaryborder={false}>
+            <>
+              <SortByAlphaIcon />
+              <StyledButtonChildLabel>Order by name</StyledButtonChildLabel>
+              {isSortingByName &&
+                (isAscendingSorting ? (
+                  <ArrowDropUpIcon />
+                ) : (
+                  <ArrowDropDownIcon />
+                ))}
+            </>
+          </Button>
+          <Button onClick={handleSortByTime} secondaryborder={false}>
+            <>
+              <SortIcon />
+              <StyledButtonChildLabel>
+                Order by date favorited
+              </StyledButtonChildLabel>
+              {!isSortingByName &&
+                (isAscendingSorting ? (
+                  <ArrowDropUpIcon />
+                ) : (
+                  <ArrowDropDownIcon />
+                ))}
+            </>
+          </Button>
+          <Button onClick={handleUnfavoriteAll} secondaryborder={false}>
+            <>
+              <DeleteIcon />
+              <ButtonChildLabel>Unfavorite all</ButtonChildLabel>
+            </>
+          </Button>
+        </StyledButtonContainer>
         <Comics>
           {comics?.map((comic, index) => (
             <ListItem<Comic>

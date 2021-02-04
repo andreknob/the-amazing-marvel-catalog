@@ -1,10 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledButton = styled.button`
+type StyledButtonProps = {
+  secondaryborder: boolean;
+};
+
+const StyledButton = styled.button<StyledButtonProps>`
   margin: 0 0 32px 16px;
   padding: 8px 16px;
-  border: 2px solid ${(props) => props.theme.secondary};
+  border: 2px solid
+    ${(props) =>
+      props.secondaryborder
+        ? props.theme.backgroundSecondary
+        : props.theme.backgroundPrimary};
   border-radius: 4px;
   color: ${(props) => props.theme.primary};
   background-color: ${(props) => props.theme.backgroundPrimary};
@@ -21,13 +29,32 @@ const StyledButton = styled.button`
   }
 `;
 
+export const ButtonChildrenContainer = styled.span`
+  display: flex;
+  align-items: center;
+`;
+
 type Props = {
   onClick?: () => void;
+  secondaryborder?: boolean;
   children: JSX.Element | string;
 };
 
-function Button({ onClick, children }: Props) {
-  return <StyledButton onClick={onClick}>{children}</StyledButton>;
+function Button({ onClick, secondaryborder = true, children }: Props) {
+  return (
+    <StyledButton onClick={onClick} secondaryborder={secondaryborder}>
+      <ButtonChildrenContainer>{children}</ButtonChildrenContainer>
+    </StyledButton>
+  );
 }
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const ButtonChildLabel = styled.span`
+  margin-left: 8px;
+`;
 
 export default Button;

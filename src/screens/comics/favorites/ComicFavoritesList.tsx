@@ -44,35 +44,19 @@ const StyledButtonChildLabel = styled(ButtonChildLabel)`
   margin-right: 8px;
 `;
 
-function compareString(a: Favorite<Comic>, b: Favorite<Comic>) {
-  if (a.data.title < b.data.title) {
+function compareString(a: string, b: string) {
+  if (a > b) {
+    return 1;
+  }
+  if (a < b) {
     return -1;
   }
-  if (a.data.title === b.data.title) {
-    return 0;
-  }
-  return 1;
-
-  /* 
-  (comicB, comicA) => {
-      if (isSortingByName) {
-        const titleB = comicB.data.title;
-        const titleA = comicA.data.title;
-
-        return isAscendingSorting
-          ? compareString(titleA, titleB)
-          : compareString(titleB, titleA);
-      }
-
-      return isAscendingSorting
-        ? comicA.timeAdded - comicB.timeAdded
-        : comicB.timeAdded - comicA.timeAdded;
-    }
-    */
+  return 0;
 }
 
 function ComicsFavoritesList() {
   const [comics, setComics] = useState<Favorite<Comic>[]>([]);
+  const [isDataFetched, setIsDataFetched] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>();
   const [isSortingByName, setIsSortingByName] = useState(true);
@@ -82,17 +66,38 @@ function ComicsFavoritesList() {
   const favoritesKey = useRef(`${location.pathname.split('/')[1]}Favorites`);
 
   useEffect(() => {
-    const sortedComics = comics.sort(compareString);
+    if (!isDataFetched) {
+      return;
+    }
 
-    setComics(sortedComics);
-  }, [isSortingByName, isAscendingSorting, comics, setComics]);
+    setComics((prevComics) => {
+      const sorted = [...prevComics].sort((comicA, comicB) => {
+        if (isSortingByName) {
+          const titleA = comicA.data.title;
+          const titleB = comicB.data.title;
+
+          return isAscendingSorting
+            ? compareString(titleA, titleB)
+            : compareString(titleB, titleA);
+        }
+
+        return isAscendingSorting
+          ? comicA.timeAdded - comicB.timeAdded
+          : comicB.timeAdded - comicA.timeAdded;
+      });
+
+      return sorted;
+    });
+  }, [isSortingByName, isAscendingSorting, setComics, isDataFetched]);
 
   useEffect(() => {
     const favorites: Favorite<Comic>[] = JSON.parse(
       localStorage.getItem(favoritesKey.current) ?? '[]',
     );
+
     setComics(favorites);
-  }, [setComics]);
+    setIsDataFetched(true);
+  }, [setComics, setIsDataFetched]);
 
   const handleItemClick = useCallback(
     (index) => {

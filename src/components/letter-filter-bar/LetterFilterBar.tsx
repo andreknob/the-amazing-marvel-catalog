@@ -22,6 +22,7 @@ const LetterFilterBar = ({ query }: Props) => {
       {ALPHABET.map((letter) => {
         return (
           <BarButton
+            key={letter}
             to={`${location.pathname}?search=${letter}`}
             selected={letter === currentLetter}
           >

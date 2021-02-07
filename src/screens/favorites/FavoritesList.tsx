@@ -15,22 +15,25 @@ import {
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 
-import Modal from '../../../components/modal/Modal';
-import ListItem from '../../../components/list/ListItem';
-import ComicModalContent from '../ComicModalContent';
-import { Favorite } from '../../../types/CommonTypes';
-import { Comic } from '../../../types/ComicTypes';
+import ListItem from '../../components/list/ListItem';
+import { Favorite } from '../../types/CommonTypes';
+import { Character } from '../../types/CharacterTypes';
+import { Comic } from '../../types/ComicTypes';
 import Button, {
   ButtonContainer,
   ButtonChildLabel,
-} from '../../../components/button/Button';
+} from '../../components/button/Button';
+import {
+  determineIfIsComic,
+  determineIfIsCharacter,
+} from '../../types/TypeGuards';
 
 const Container = styled.div`
   width: 70%;
   margin: 32px auto 0 auto;
 `;
 
-const Comics = styled.div`
+const Items = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -44,7 +47,7 @@ const StyledButtonChildLabel = styled(ButtonChildLabel)`
   margin-right: 8px;
 `;
 
-function compareString(a: string, b: string) {
+function compareString(a = '', b = '') {
   if (a > b) {
     return 1;
   }
@@ -54,8 +57,18 @@ function compareString(a: string, b: string) {
   return 0;
 }
 
-function ComicsFavoritesList() {
-  const [comics, setComics] = useState<Favorite<Comic>[]>([]);
+type Props<FavoriteArg> = {
+  renderModal: (
+    selectedItem: FavoriteArg | null,
+    isModalOpen: boolean,
+    setIsModalOpen: (isModalOpen: boolean) => void,
+  ) => void;
+};
+
+function FavoritesList<FavoriteArg extends Comic | Character>({
+  renderModal,
+}: Props<FavoriteArg>) {
+  const [dataArray, setDataArray] = useState<Favorite<FavoriteArg>[]>([]);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>();
@@ -70,34 +83,46 @@ function ComicsFavoritesList() {
       return;
     }
 
-    setComics((prevComics) => {
-      const sorted = [...prevComics].sort((comicA, comicB) => {
+    setDataArray((prevArray) => {
+      const sorted = [...prevArray].sort((objectA, objectB) => {
         if (isSortingByName) {
-          const titleA = comicA.data.title;
-          const titleB = comicB.data.title;
+          let displayDataA;
+          let displayDataB;
+
+          if (determineIfIsComic(objectA.data)) {
+            displayDataA = objectA.data.title;
+          } else if (determineIfIsCharacter(objectA.data)) {
+            displayDataA = objectA.data.name;
+          }
+
+          if (determineIfIsComic(objectB.data)) {
+            displayDataB = objectB.data.title;
+          } else if (determineIfIsCharacter(objectB.data)) {
+            displayDataB = objectB.data.name;
+          }
 
           return isAscendingSorting
-            ? compareString(titleA, titleB)
-            : compareString(titleB, titleA);
+            ? compareString(displayDataA, displayDataB)
+            : compareString(displayDataB, displayDataA);
         }
 
         return isAscendingSorting
-          ? comicA.timeAdded - comicB.timeAdded
-          : comicB.timeAdded - comicA.timeAdded;
+          ? objectA.timeAdded - objectB.timeAdded
+          : objectB.timeAdded - objectA.timeAdded;
       });
 
       return sorted;
     });
-  }, [isSortingByName, isAscendingSorting, setComics, isDataFetched]);
+  }, [isSortingByName, isAscendingSorting, setDataArray, isDataFetched]);
 
   useEffect(() => {
-    const favorites: Favorite<Comic>[] = JSON.parse(
+    const favorites: Favorite<FavoriteArg>[] = JSON.parse(
       localStorage.getItem(favoritesKey.current) ?? '[]',
     );
 
-    setComics(favorites);
+    setDataArray(favorites);
     setIsDataFetched(true);
-  }, [setComics, setIsDataFetched]);
+  }, [setDataArray, setIsDataFetched]);
 
   const handleItemClick = useCallback(
     (index) => {
@@ -108,24 +133,24 @@ function ComicsFavoritesList() {
   );
 
   const handleUnfavorite = useCallback(
-    (comic) => {
-      const newComics = [...comics];
-      const index = newComics.findIndex((item) => item.id === comic.id);
+    (dataItem) => {
+      const newDataArray = [...dataArray];
+      const index = newDataArray.findIndex((item) => item.id === dataItem.id);
 
-      newComics.splice(index, 1);
-      setComics(newComics);
+      newDataArray.splice(index, 1);
+      setDataArray(newDataArray);
     },
-    [comics, setComics],
+    [dataArray, setDataArray],
   );
 
   const handleUnfavoriteAll = useCallback(() => {
-    localStorage.setItem('comicsFavorites', JSON.stringify([]));
-    setComics([]);
-  }, [setComics]);
+    localStorage.setItem(favoritesKey.current, JSON.stringify([]));
+    setDataArray([]);
+  }, [setDataArray]);
 
-  const selectedComic = useMemo(
-    () => (selectedIndex != null ? comics[selectedIndex].data : null),
-    [comics, selectedIndex],
+  const selectedItem = useMemo(
+    () => (selectedIndex != null ? dataArray[selectedIndex].data : null),
+    [dataArray, selectedIndex],
   );
 
   const handleSortByName = useCallback(() => {
@@ -197,29 +222,22 @@ function ComicsFavoritesList() {
             </>
           </Button>
         </StyledButtonContainer>
-        <Comics>
-          {comics?.map((comic, index) => (
-            <ListItem<Comic>
-              key={comic.id}
+        <Items>
+          {dataArray?.map((item, index) => (
+            <ListItem<FavoriteArg>
+              key={item.id}
               onClick={() => handleItemClick(index)}
-              item={comic.data}
+              item={item.data}
               displayProp="title"
               onUnfavorite={handleUnfavorite}
             />
           ))}
-        </Comics>
+        </Items>
       </Container>
 
-      <Modal isOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
-        {selectedComic != null ? (
-          <ComicModalContent
-            comic={selectedComic}
-            dataProvider="Marked as a favorite by the user"
-          />
-        ) : null}
-      </Modal>
+      {renderModal(selectedItem, isModalOpen, setIsModalOpen)}
     </>
   );
 }
 
-export default ComicsFavoritesList;
+export default FavoritesList;

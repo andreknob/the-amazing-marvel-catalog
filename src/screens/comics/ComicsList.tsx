@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Favorite as FavoriteIcon } from '@material-ui/icons';
 import styled from 'styled-components';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
+import Button, { ButtonContainer } from '../../components/button/Button';
+import LetterFilterBar from '../../components/letter-filter-bar/LetterFilterBar';
+import ListItem from '../../components/list/ListItem';
 import Loading from '../../components/loading-spinner/LoadingSpinner';
 import Modal from '../../components/modal/Modal';
 import PaginationBar from '../../components/pagination-bar/PaginationBar';
+import useQuery from '../../hooks/useQuery';
 import ComicsService from '../../services/ComicsService';
 import { Comic } from '../../types/ComicTypes';
 import { Pagination } from '../../types/CommonTypes';
 import ComicModalContent from './ComicModalContent';
-import useQuery from '../../hooks/useQuery';
-import ListItem from '../../components/list/ListItem';
-import LetterFilterBar from '../../components/letter-filter-bar/LetterFilterBar';
 
 const PAGE_LIMIT = 20;
 
@@ -24,6 +26,16 @@ const Comics = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+`;
+
+const StyledButtonContainer = styled(ButtonContainer)`
+  margin-right: 8px;
+`;
+
+const StyledLink = styled(Link)`
+  margin-left: 8px;
+  color: ${(props) => props.theme.primary};
+  text-decoration: none;
 `;
 
 function ComicsList({ location }: RouteComponentProps) {
@@ -81,6 +93,14 @@ function ComicsList({ location }: RouteComponentProps) {
       <Container>
         {LetterFilterBarElement}
         {PaginationBarElement}
+        <StyledButtonContainer>
+          <Button secondaryborder={false}>
+            <>
+              <FavoriteIcon />
+              <StyledLink to="/comics/favorites">See favorites</StyledLink>
+            </>
+          </Button>
+        </StyledButtonContainer>
         <Comics>
           {comics?.map((comic, index) => (
             <ListItem<Comic>

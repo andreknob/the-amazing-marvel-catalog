@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Favorite as FavoriteIcon } from '@material-ui/icons';
 import styled from 'styled-components';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
+import Button, { ButtonContainer } from '../../components/button/Button';
+import LetterFilterBar from '../../components/letter-filter-bar/LetterFilterBar';
+import ListItem from '../../components/list/ListItem';
 import Loading from '../../components/loading-spinner/LoadingSpinner';
 import Modal from '../../components/modal/Modal';
 import PaginationBar from '../../components/pagination-bar/PaginationBar';
+import useQuery from '../../hooks/useQuery';
 import CharactersService from '../../services/CharactersService';
 import { Character } from '../../types/CharacterTypes';
 import { Pagination } from '../../types/CommonTypes';
 import CharacterModalContent from './CharacterModalContent';
-import useQuery from '../../hooks/useQuery';
-import ListItem from '../../components/list/ListItem';
-import LetterFilterBar from '../../components/letter-filter-bar/LetterFilterBar';
 
 const PAGE_LIMIT = 20;
 
@@ -24,6 +26,23 @@ const Characters = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+`;
+
+const StyledButtonContainer = styled(ButtonContainer)`
+  margin-right: 8px;
+`;
+
+const StyledLink = styled(Link)`
+  padding: 8px 16px;
+  color: ${(props) => props.theme.primary};
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+`;
+
+const FavoriteLabel = styled.span`
+  margin-left: 8px;
 `;
 
 function CharactersList({ location }: RouteComponentProps) {
@@ -81,7 +100,16 @@ function CharactersList({ location }: RouteComponentProps) {
       <Container>
         {LetterFilterBarElement}
         {PaginationBarElement}
-
+        <StyledButtonContainer>
+          <Button secondaryborder={false}>
+            <StyledLink to="/characters/favorites">
+              <>
+                <FavoriteIcon />
+                <FavoriteLabel>See favorites</FavoriteLabel>
+              </>
+            </StyledLink>
+          </Button>
+        </StyledButtonContainer>
         <Characters>
           {characters?.map((character, index) => (
             <ListItem<Character>

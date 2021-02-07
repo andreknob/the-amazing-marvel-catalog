@@ -5,7 +5,8 @@ import AppBar from './components/app-bar/AppBar';
 import Home from './screens/home/Home';
 import ComicsList from './screens/comics/ComicsList';
 import CharactersList from './screens/characters/CharactersList';
-import ComicsFavoritesList from './screens/comics/favorites/ComicFavoritesList';
+import FavoriteCharactersList from './screens/characters/favorites/FavoriteCharactersList';
+import FavoriteComicsList from './screens/comics/favorites/FavoriteComicsList';
 
 const theme = {
   primary: 'white',
@@ -26,9 +27,14 @@ function App(): ReactElement {
           <Route
             path="/comics/favorites"
             exact
-            component={ComicsFavoritesList}
+            component={FavoriteComicsList}
           />
           <Route path="/characters" exact component={CharactersList} />
+          <Route
+            path="/characters/favorites"
+            exact
+            component={FavoriteCharactersList}
+          />
         </Switch>
       </Router>
     </ThemeProvider>

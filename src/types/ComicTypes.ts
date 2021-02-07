@@ -22,7 +22,7 @@ type Creators = {
   items: Creator[];
 };
 
-export type Comic = {
+export interface Comic {
   id: number;
   title: string;
   creators: Creators;
@@ -32,4 +32,4 @@ export type Comic = {
   series: Series;
   stories: Stories;
   urls: Link[];
-};
+}

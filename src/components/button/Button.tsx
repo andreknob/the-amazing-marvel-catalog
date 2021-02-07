@@ -7,7 +7,7 @@ type StyledButtonProps = {
 
 const StyledButton = styled.button<StyledButtonProps>`
   margin: 0 0 32px 16px;
-  padding: 8px 16px;
+  padding: 0;
   border: 2px solid
     ${(props) =>
       props.secondaryborder

@@ -15,14 +15,11 @@ import {
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 
-import ListItem from '../../components/list/ListItem';
+import ListItem from '../list/ListItem';
 import { Favorite } from '../../types/CommonTypes';
 import { Character } from '../../types/CharacterTypes';
 import { Comic } from '../../types/ComicTypes';
-import Button, {
-  ButtonContainer,
-  ButtonChildLabel,
-} from '../../components/button/Button';
+import Button, { ButtonContainer, ButtonChildLabel } from '../button/Button';
 import {
   determineIfIsComic,
   determineIfIsCharacter,

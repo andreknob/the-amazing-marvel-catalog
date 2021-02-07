@@ -62,7 +62,7 @@ const ShowDetails = styled.div`
   align-items: center;
 `;
 
-enum DisplayPropEnum {
+export enum DisplayPropEnum {
   title,
   name,
 }

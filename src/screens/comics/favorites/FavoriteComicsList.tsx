@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 
 import Modal from '../../../components/modal/Modal';
-import ComicModalContent from '../ComicModalContent';
+import FavoritesList from '../../../components/favorites/FavoritesList';
 import { Comic } from '../../../types/ComicTypes';
-import FavoritesList from '../../favorites/FavoritesList';
+import ComicModalContent from '../ComicModalContent';
 
 function FavoriteComicsList() {
   const renderModal = useCallback(

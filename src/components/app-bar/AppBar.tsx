@@ -24,8 +24,12 @@ const Input = styled.input`
 `;
 
 const StyledLink = styled(Link)`
+  padding: 8px 16px;
   color: ${(props) => props.theme.primary};
   text-decoration: none;
+
+  display: flex;
+  align-items: center;
 `;
 
 const Label = styled.span`
@@ -53,14 +57,12 @@ const AppBar: React.FC<Props> = () => {
         <Input value={searchTerm} onChange={handleChange} />
         <ButtonContainer>
           <Button>
-            <>
-              <SearchIcon />
-              <ButtonChildLabel>
-                <StyledLink to={`/comics?search=${searchTerm}`}>
-                  Search Comics
-                </StyledLink>
-              </ButtonChildLabel>
-            </>
+            <StyledLink to={`/comics?search=${searchTerm}`}>
+              <>
+                <SearchIcon />
+                <ButtonChildLabel>Search Comics</ButtonChildLabel>
+              </>
+            </StyledLink>
           </Button>
           <Button>
             <>

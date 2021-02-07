@@ -65,10 +65,10 @@ const LoadingText = styled.div`
 `;
 
 type Props = {
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
-const LoadingSpinner: React.FC<Props> = ({ isLoading }: Props) => {
+const LoadingSpinner: React.FC<Props> = ({ isLoading = true }: Props) => {
   if (!isLoading) {
     return null;
   }

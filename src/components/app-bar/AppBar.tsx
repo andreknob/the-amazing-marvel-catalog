@@ -56,7 +56,7 @@ const AppBar: React.FC<Props> = () => {
         <Label>The Amazing Marvel Catalog Search</Label>
         <Input value={searchTerm} onChange={handleChange} />
         <ButtonContainer>
-          <Button>
+          <Button usePadding={false}>
             <StyledLink to={`/comics?search=${searchTerm}`}>
               <>
                 <SearchIcon />
@@ -64,15 +64,13 @@ const AppBar: React.FC<Props> = () => {
               </>
             </StyledLink>
           </Button>
-          <Button>
-            <>
-              <SearchIcon />
-              <ButtonChildLabel>
-                <StyledLink to={`/characters?search=${searchTerm}`}>
-                  Search Characters
-                </StyledLink>
-              </ButtonChildLabel>
-            </>
+          <Button usePadding={false}>
+            <StyledLink to={`/characters?search=${searchTerm}`}>
+              <>
+                <SearchIcon />
+                <ButtonChildLabel>Search Characters</ButtonChildLabel>
+              </>
+            </StyledLink>
           </Button>
         </ButtonContainer>
         <Nav />

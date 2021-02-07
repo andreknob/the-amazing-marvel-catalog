@@ -68,7 +68,7 @@ function PaginatedList<Item extends Character | Comic>({
   const [pagination, setPagination] = useState<Pagination>();
   const [dataProvider, setDataProvider] = useState<string>('');
   const [items, setItems] = useState<Item[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number>();
 
@@ -115,7 +115,7 @@ function PaginatedList<Item extends Character | Comic>({
         {LetterFilterBarElement}
         {PaginationBarElement}
         <StyledButtonContainer>
-          <Button secondaryborder={false}>
+          <Button secondaryborder={false} usePadding={false}>
             <StyledLink to={`${location.pathname}/favorites`}>
               <>
                 <FavoriteIcon />

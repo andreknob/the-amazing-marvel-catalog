@@ -1,12 +1,21 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import AppBar from './components/app-bar/AppBar';
+import LoadingSpinner from './components/loading-spinner/LoadingSpinner';
 import Home from './screens/home/Home';
-import ComicsList from './screens/comics/ComicsList';
-import CharactersList from './screens/characters/CharactersList';
-import FavoriteCharactersList from './screens/characters/favorites/FavoriteCharactersList';
-import FavoriteComicsList from './screens/comics/favorites/FavoriteComicsList';
+
+const ComicsList = lazy(() => import('./screens/comics/ComicsList'));
+const FavoriteComicsList = lazy(
+  () => import('./screens/comics/favorites/FavoriteComicsList'),
+);
+
+const CharactersList = lazy(
+  () => import('./screens/characters/CharactersList'),
+);
+const FavoriteCharactersList = lazy(
+  () => import('./screens/characters/favorites/FavoriteCharactersList'),
+);
 
 const theme = {
   primary: 'white',
@@ -21,21 +30,23 @@ function App(): ReactElement {
     <ThemeProvider theme={theme}>
       <Router>
         <AppBar />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/comics" exact component={ComicsList} />
-          <Route
-            path="/comics/favorites"
-            exact
-            component={FavoriteComicsList}
-          />
-          <Route path="/characters" exact component={CharactersList} />
-          <Route
-            path="/characters/favorites"
-            exact
-            component={FavoriteCharactersList}
-          />
-        </Switch>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/comics" exact component={ComicsList} />
+            <Route
+              path="/comics/favorites"
+              exact
+              component={FavoriteComicsList}
+            />
+            <Route path="/characters" exact component={CharactersList} />
+            <Route
+              path="/characters/favorites"
+              exact
+              component={FavoriteCharactersList}
+            />
+          </Switch>
+        </Suspense>
       </Router>
     </ThemeProvider>
   );

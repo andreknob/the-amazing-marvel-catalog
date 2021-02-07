@@ -3,11 +3,13 @@ import styled from 'styled-components';
 
 type StyledButtonProps = {
   secondaryborder: boolean;
+  usePadding: boolean;
 };
 
 const StyledButton = styled.button<StyledButtonProps>`
   margin: 0 0 32px 16px;
   padding: 0;
+  padding: ${(props) => (props.usePadding ? '8px 16px' : '0')};
   border: 2px solid
     ${(props) =>
       props.secondaryborder
@@ -38,11 +40,21 @@ type Props = {
   onClick?: () => void;
   secondaryborder?: boolean;
   children: JSX.Element | string;
+  usePadding?: boolean;
 };
 
-function Button({ onClick, secondaryborder = true, children }: Props) {
+function Button({
+  onClick,
+  secondaryborder = true,
+  children,
+  usePadding = true,
+}: Props) {
   return (
-    <StyledButton onClick={onClick} secondaryborder={secondaryborder}>
+    <StyledButton
+      onClick={onClick}
+      secondaryborder={secondaryborder}
+      usePadding={usePadding}
+    >
       <ButtonChildrenContainer>{children}</ButtonChildrenContainer>
     </StyledButton>
   );

@@ -32,8 +32,11 @@ const Header = styled.div`
 `;
 
 const Body = styled.div`
-  display: flex;
   padding: 16px 24px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Footer = styled.div`
@@ -47,16 +50,30 @@ const Footer = styled.div`
 
 const Description = styled.div`
   font-size: 2rem;
-  line-height: 24px;
-  margin-left: 32px;
+  line-height: 2.4rem;
+  margin-left: 3.2rem;
   background-color: ${(props) => props.theme.backgroundPrimary};
-  padding: 16px;
+  padding: 1.6rem;
   border-radius: 3px;
+  max-height: 655px;
+  overflow-y: auto;
+
+  flex: 1 1 250px;
+
+  @media (max-width: 599px) {
+    margin-top: 1.6rem;
+  }
 `;
 
 const Portrait = styled.img`
-  width: 425px;
+  width: 50%;
   border-radius: 3px;
+
+  object-fit: cover;
+
+  @media (max-width: 599px) {
+    width: 75%;
+  }
 `;
 
 const Anchor = styled.a`

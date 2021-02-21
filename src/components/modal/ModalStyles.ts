@@ -120,7 +120,7 @@ const Body = styled.div<BodyProps>`
   background-color: ${(props) => props.theme.backgroundSecondary};
   color: ${(props) => props.theme.primary};
   margin: 0 auto;
-  width: 50%;
+  width: 60%;
   border-radius: 3px;
   font-weight: 300;
   position: relative;
@@ -144,6 +144,22 @@ const Body = styled.div<BodyProps>`
   ${roadRunnerIn}
 
   ${roadRunnerOut}
+
+  @media (max-width: 1640px) {
+    width: 65%;
+  }
+  @media (max-width: 1440px) {
+    width: 75%;
+  }
+  @media (max-width: 1200px) {
+    width: 85%;
+  }
+  @media (max-width: 1024px) {
+    width: 95%;
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const CloseButton = styled.div`

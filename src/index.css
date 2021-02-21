@@ -2,14 +2,32 @@
 
 * {
     box-sizing: border-box;
-  }
+}
+
+html {
+  font-size: 62.5%;
+}
 
 body {
+    font-size: 1.6rem;
     /* font-family: 'Architects Daughter', cursive;*/
     font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
-    letter-spacing: 2px;
+    letter-spacing: 0.2rem;
     background-color: #121214;
     color: white;
+    height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  html {
+    font-size: 56.25%;   
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 50%;   
+  }
 }

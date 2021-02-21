@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Ul = styled.ul`
   list-style: none;
@@ -9,14 +9,21 @@ const Ul = styled.ul`
   align-items: center;
 `;
 
-const StyledLink = styled(Link)`
+type LinkProps = {
+  isActive: boolean;
+};
+
+const StyledLink = styled(Link)<LinkProps>`
   text-decoration: none;
-  font-size: 22px;
+  font-size: 2.2rem;
   font-weight: bold;
-  letter-spacing: 4px;
-  color: ${(props) => props.theme.primary};
-  padding: 8px;
-  border-bottom: 2px solid ${(props) => props.theme.secondary};
+  letter-spacing: 0.4rem;
+  color: ${(props) =>
+    props.isActive ? props.theme.secondary : props.theme.primary};
+  padding: 0.8rem;
+  border-bottom: 2px solid
+    ${(props) =>
+      props.isActive ? props.theme.backgroundPrimary : props.theme.secondary};
 
   transition: all 0.2s linear;
 
@@ -30,13 +37,18 @@ const StyledLink = styled(Link)`
 `;
 
 function Nav(): ReactElement {
+  const location = useLocation();
+
   return (
     <nav>
       <Ul>
-        <StyledLink to="/comics">
+        <StyledLink to="/comics" isActive={location.pathname === '/comics'}>
           <li>Comics</li>
         </StyledLink>
-        <StyledLink to="/characters">
+        <StyledLink
+          to="/characters"
+          isActive={location.pathname === '/characters'}
+        >
           <li>Characters</li>
         </StyledLink>
       </Ul>

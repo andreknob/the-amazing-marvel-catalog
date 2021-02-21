@@ -37,10 +37,15 @@ const StyledLink = styled(Link)`
 
   display: flex;
   align-items: center;
+
+  svg {
+    font-size: 2rem;
+  }
 `;
 
 const FavoriteLabel = styled.span`
   margin-left: 8px;
+  text-align: center;
 `;
 
 interface Props<Item> {

@@ -19,7 +19,7 @@ const StyledButton = styled.button<StyledButtonProps>`
   color: ${(props) => props.theme.primary};
   background-color: ${(props) => props.theme.backgroundPrimary};
   cursor: pointer;
-  font-size: 18px;
+  font-size: 1.8rem;
   font-weight: bold;
   letter-spacing: 2px;
   text-decoration: none;

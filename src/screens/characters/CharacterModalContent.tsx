@@ -23,7 +23,7 @@ const Header = styled.div`
   justify-content: space-around;
 
   color: ${(props) => props.theme.primary};
-  font-size: 30px;
+  font-size: 3rem;
   font-weight: bold;
   line-height: 65px;
   margin-bottom: 15px;
@@ -46,7 +46,7 @@ const Footer = styled.div`
 `;
 
 const Description = styled.div`
-  font-size: 20px;
+  font-size: 2rem;
   line-height: 24px;
   margin-left: 32px;
   background-color: ${(props) => props.theme.backgroundPrimary};

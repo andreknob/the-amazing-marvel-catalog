@@ -1,4 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import {
+  NavigateNext as NavigateNextIcon,
+  NavigateBefore as NavigateBeforeIcon,
+  SkipNext as SkipNextIcon,
+  SkipPrevious as SkipPreviousIcon,
+} from '@material-ui/icons';
 import styled from 'styled-components';
 import * as H from 'history';
 import { Pagination } from '../../types/CommonTypes';
@@ -8,6 +14,9 @@ import BarButton from '../bar-button/BarButton';
 const Container = styled.div`
   width: fit-content;
   margin: 48px auto;
+
+  display: flex;
+  align-items: center;
 `;
 
 type Props = {
@@ -37,14 +46,14 @@ const PaginationBar = ({ pagination, query }: Props) => {
   return (
     <Container>
       <BarButton to={(location: H.Location) => getRoute(location, 1)}>
-        {'|<'}
+        <SkipPreviousIcon />
       </BarButton>
       <BarButton
         to={(location: H.Location) =>
           getRoute(location, Math.max(currentPage - 1, 1))
         }
       >
-        {'<'}
+        <NavigateBeforeIcon />
       </BarButton>
       <BarButton
         to={(location: H.Location) => getRoute(location, 1)}
@@ -76,10 +85,10 @@ const PaginationBar = ({ pagination, query }: Props) => {
           getRoute(location, Math.min(currentPage + 1, lastPage))
         }
       >
-        {'>'}
+        <NavigateNextIcon />
       </BarButton>
       <BarButton to={(location: H.Location) => getRoute(location, lastPage)}>
-        {'>|'}
+        <SkipNextIcon />
       </BarButton>
     </Container>
   );

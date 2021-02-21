@@ -19,8 +19,8 @@ const CenteredContent = styled.div`
 const Input = styled.input`
   width: 100%;
   margin-bottom: 16px;
-  font-size: 22px;
-  padding: 8px;
+  font-size: 2.2rem;
+  padding: 0.8rem;
 `;
 
 const StyledLink = styled(Link)`
@@ -30,11 +30,15 @@ const StyledLink = styled(Link)`
 
   display: flex;
   align-items: center;
+
+  svg {
+    font-size: 2.4rem;
+  }
 `;
 
 const Label = styled.span`
   display: block;
-  font-size: 32px;
+  font-size: 3.2rem;
   padding: 72px 0 16px 0;
 `;
 

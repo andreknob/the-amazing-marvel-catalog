@@ -151,7 +151,7 @@ const CloseButton = styled.div`
   top: 2px;
   right: 8px;
   color: ${(props) => props.theme.primary};
-  font-size: 24px;
+  font-size: 2.4rem;
   cursor: pointer;
 `;
 

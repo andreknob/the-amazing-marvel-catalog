@@ -7,7 +7,7 @@ type StyledButtonProps = {
 };
 
 const StyledButton = styled.button<StyledButtonProps>`
-  margin: 0 0 32px 16px;
+  margin: 0 0 8px 16px;
   padding: 0;
   padding: ${(props) => (props.usePadding ? '8px 16px' : '0')};
   border: 2px solid
@@ -63,6 +63,9 @@ function Button({
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
+
+  margin-bottom: 24px;
 `;
 
 export const ButtonChildLabel = styled.span`

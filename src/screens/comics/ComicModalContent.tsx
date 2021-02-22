@@ -1,7 +1,14 @@
-import React from 'react';
+import React, {
+  RefObject,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import ReactHtmlParser from 'react-html-parser';
 import { Comic } from '../../types/ComicTypes';
+import useWindowResizeEventListener from '../../hooks/useWindowResizeEventListener';
 
 const Container = styled.div`
   position: relative;
@@ -32,12 +39,18 @@ const Header = styled.div`
   background-color: ${(props) => props.theme.backgroundPrimary};
 `;
 
-const Body = styled.div`
+type BodyProps = {
+  bodyMaxHeight: number;
+};
+
+const Body = styled.div<BodyProps>`
   padding: 16px 24px;
 
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  max-height: ${(props) => props.bodyMaxHeight}px;
+  overflow-y: auto;
 `;
 
 const Footer = styled.div`
@@ -144,11 +157,31 @@ interface Props {
 
 const ComicModalContent: React.FC<Props> = ({ comic, dataProvider }: Props) => {
   const { title, description, thumbnail } = comic;
+  const [height, setHeight] = useState(0);
+
+  const headerRef: RefObject<HTMLDivElement> = useRef(null);
+  const footerRef: RefObject<HTMLDivElement> = useRef(null);
+
+  const handleWindowResize = useCallback(
+    (innerWidth, innerHeight: number) => {
+      setHeight(innerHeight);
+    },
+    [setHeight],
+  );
+
+  useWindowResizeEventListener(handleWindowResize);
+
+  const bodyMaxHeight = useMemo(() => {
+    const headerHeight = headerRef.current?.clientHeight ?? 0;
+    const footerHeight = footerRef.current?.clientHeight ?? 0;
+
+    return height - headerHeight - footerHeight - 16;
+  }, [height]);
 
   return (
     <Container>
-      <Header>{title}</Header>
-      <Body>
+      <Header ref={headerRef}>{title}</Header>
+      <Body bodyMaxHeight={bodyMaxHeight}>
         <Portrait
           alt={title}
           src={`${thumbnail.path}.${thumbnail.extension}`}
@@ -159,7 +192,7 @@ const ComicModalContent: React.FC<Props> = ({ comic, dataProvider }: Props) => {
           <DetailLink comic={comic} />
         </Description>
       </Body>
-      <Footer>{dataProvider}</Footer>
+      <Footer ref={footerRef}>{dataProvider}</Footer>
     </Container>
   );
 };

@@ -28,8 +28,8 @@ const StyledBarButton = styled(Link)<BarButtonProps>`
 `;
 
 const ChildrenContainer = styled.span`
-  height: 24px;
-  min-width: 24px;
+  height: 2.4rem;
+  min-width: 2.4rem;
 
   display: flex;
   justify-content: center;

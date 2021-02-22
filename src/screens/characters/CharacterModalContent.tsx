@@ -37,6 +37,8 @@ const Body = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  max-height: 100%;
+  overflow-y: auto;
 `;
 
 const Footer = styled.div`

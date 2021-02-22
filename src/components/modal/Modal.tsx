@@ -1,4 +1,9 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import { Container, Background, Body, CloseButton } from './ModalStyles';
 
 interface ModalProps {
@@ -9,6 +14,14 @@ interface ModalProps {
 
 function Modal({ isOpen, setIsModalOpen, children }: ModalProps) {
   const [animateOut, setAnimateOut] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen]);
 
   useLayoutEffect(() => {
     if (isOpen && animateOut) {

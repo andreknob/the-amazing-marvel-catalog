@@ -14,6 +14,18 @@ const Container = styled.div`
 const CenteredContent = styled.div`
   width: 70%;
   margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+
+  @media (max-width: 375px) {
+    width: 95%;
+  }
 `;
 
 const Input = styled.input`

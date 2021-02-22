@@ -18,11 +18,23 @@ const PAGE_SIZE = 20;
 const Container = styled.div`
   width: 70%;
   margin: 32px auto 0 auto;
+
+  @media (max-width: 1024px) {
+    width: 80%;
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+  }
+
+  @media (max-width: 375px) {
+    width: 95%;
+  }
 `;
 
 const Items = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 `;
 

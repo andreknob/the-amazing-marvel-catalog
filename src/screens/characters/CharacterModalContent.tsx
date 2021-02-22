@@ -1,6 +1,13 @@
-import React from 'react';
+import React, {
+  RefObject,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import { Character } from '../../types/CharacterTypes';
+import useWindowResizeEventListener from '../../hooks/useWindowResizeEventListener';
 
 const Container = styled.div`
   position: relative;
@@ -31,13 +38,17 @@ const Header = styled.div`
   background-color: ${(props) => props.theme.backgroundPrimary};
 `;
 
-const Body = styled.div`
+type BodyProps = {
+  bodyMaxHeight: number;
+};
+
+const Body = styled.div<BodyProps>`
   padding: 16px 24px;
 
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-height: 100%;
+  max-height: ${(props) => props.bodyMaxHeight}px;
   overflow-y: auto;
 `;
 
@@ -127,11 +138,31 @@ const CharacterModalContent: React.FC<Props> = ({
   dataProvider,
 }: Props) => {
   const { name, description, thumbnail } = character;
+  const [height, setHeight] = useState(0);
+
+  const headerRef: RefObject<HTMLDivElement> = useRef(null);
+  const footerRef: RefObject<HTMLDivElement> = useRef(null);
+
+  const handleWindowResize = useCallback(
+    (innerWidth, innerHeight: number) => {
+      setHeight(innerHeight);
+    },
+    [setHeight],
+  );
+
+  useWindowResizeEventListener(handleWindowResize);
+
+  const bodyMaxHeight = useMemo(() => {
+    const headerHeight = headerRef.current?.clientHeight ?? 0;
+    const footerHeight = footerRef.current?.clientHeight ?? 0;
+
+    return height - headerHeight - footerHeight - 16;
+  }, [height]);
 
   return (
     <Container>
       <Header>{name}</Header>
-      <Body>
+      <Body bodyMaxHeight={bodyMaxHeight}>
         <Portrait alt={name} src={`${thumbnail.path}.${thumbnail.extension}`} />
         <Description>
           {description}

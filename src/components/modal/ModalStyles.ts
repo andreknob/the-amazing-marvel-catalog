@@ -67,7 +67,7 @@ const Container = styled.div<ContainerProps>`
   top: 0;
   left: 0;
   transform: scale(0);
-  z-index: 1;
+  z-index: 1000;
 
   ${(props) => {
     if (!props.isOpen) {

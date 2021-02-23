@@ -10,7 +10,7 @@ const Ul = styled.ul`
 `;
 
 type LinkProps = {
-  isActive: boolean;
+  $isActive: boolean;
 };
 
 const StyledLink = styled(Link)<LinkProps>`
@@ -19,11 +19,11 @@ const StyledLink = styled(Link)<LinkProps>`
   font-weight: bold;
   letter-spacing: 0.4rem;
   color: ${(props) =>
-    props.isActive ? props.theme.secondary : props.theme.primary};
+    props.$isActive ? props.theme.secondary : props.theme.primary};
   padding: 0.8rem;
   border-bottom: 2px solid
     ${(props) =>
-      props.isActive ? props.theme.backgroundPrimary : props.theme.secondary};
+      props.$isActive ? props.theme.backgroundPrimary : props.theme.secondary};
 
   transition: all 0.2s linear;
 
@@ -42,12 +42,12 @@ function Nav(): ReactElement {
   return (
     <nav>
       <Ul>
-        <StyledLink to="/comics" isActive={location.pathname === '/comics'}>
+        <StyledLink to="/comics" $isActive={location.pathname === '/comics'}>
           <li>Comics</li>
         </StyledLink>
         <StyledLink
           to="/characters"
-          isActive={location.pathname === '/characters'}
+          $isActive={location.pathname === '/characters'}
         >
           <li>Characters</li>
         </StyledLink>

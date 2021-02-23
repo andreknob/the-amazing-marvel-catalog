@@ -54,6 +54,7 @@ function Button({
       onClick={onClick}
       secondaryborder={secondaryborder}
       usePadding={usePadding}
+      data-testid="button-element"
     >
       <ButtonChildrenContainer>{children}</ButtonChildrenContainer>
     </StyledButton>

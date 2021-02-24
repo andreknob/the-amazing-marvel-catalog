@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import {
   NavigateNext as NavigateNextIcon,
   NavigateBefore as NavigateBeforeIcon,
@@ -27,15 +27,8 @@ type Props = {
 
 const PaginationBar = ({ pagination, query }: Props) => {
   const { limit, total } = pagination;
-  const [loadedPage, setLoadedPage] = useState(1);
 
   const currentPage = useMemo(() => Number(query.get('page') ?? 1), [query]);
-
-  useEffect(() => {
-    if (currentPage !== loadedPage) {
-      setLoadedPage(currentPage);
-    }
-  }, [currentPage, loadedPage, setLoadedPage]);
 
   const lastPage = useMemo(() => Math.ceil(total / limit), [total, limit]);
 

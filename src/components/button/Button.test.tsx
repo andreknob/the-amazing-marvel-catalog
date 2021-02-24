@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent, cleanup, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import Button from './Button';
 
 test('renders the button', async () => {

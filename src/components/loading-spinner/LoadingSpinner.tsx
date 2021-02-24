@@ -74,10 +74,10 @@ const LoadingSpinner: React.FC<Props> = ({ isLoading = true }: Props) => {
   }
 
   return (
-    <Container>
+    <Container data-testid="container-element">
       <div>
-        <Spinner />
-        <LoadingText />
+        <Spinner data-testid="spinner-element" />
+        <LoadingText data-testid="text-element" />
       </div>
     </Container>
   );

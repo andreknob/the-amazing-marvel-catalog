@@ -17,7 +17,7 @@ const FavoriteCharactersList = lazy(
   () => import('./screens/characters/favorites/FavoriteCharactersList'),
 );
 
-const theme = {
+export const theme = {
   primary: 'white',
   secondary: '#af0000',
   backgroundPrimary: '#202024',

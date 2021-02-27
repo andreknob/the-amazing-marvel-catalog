@@ -1,16 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen } from '../../test-utils';
 import BarButton from './BarButton';
+import { theme } from '../../App';
 
-function TestingComponent() {
+function TestingComponent({ selected = false }) {
   return (
     <Router>
       <Switch>
         <Route
           path="/"
           exact
-          component={() => <BarButton to="/test">Test link</BarButton>}
+          component={() => (
+            <BarButton to="/test" selected={selected}>
+              Test link
+            </BarButton>
+          )}
         />
         <Route
           path="/test"
@@ -29,6 +34,22 @@ describe('BarButton', () => {
 
       const testLinkElement = screen.getByRole('link');
       expect(testLinkElement).toHaveTextContent('Test link');
+    });
+
+    test('the element has the primary color', async () => {
+      render(<TestingComponent />);
+
+      const styledElement = screen.getByRole('link');
+      expect(styledElement).toHaveStyle(`color: ${theme.primary};`);
+    });
+  });
+
+  describe('if selected', () => {
+    test('the element has the secondary color', async () => {
+      render(<TestingComponent selected />);
+
+      const styledElement = screen.getByRole('link');
+      expect(styledElement).toHaveStyle(`color: ${theme.secondary};`);
     });
   });
 

@@ -43,7 +43,11 @@ interface Props extends LinkProps {
 
 const BarButton = ({ to, children, selected }: Props) => {
   return (
-    <StyledBarButton to={to} selected={selected}>
+    <StyledBarButton
+      to={to}
+      selected={selected}
+      data-testid="styled-bar-button"
+    >
       <ChildrenContainer>{children}</ChildrenContainer>
     </StyledBarButton>
   );
